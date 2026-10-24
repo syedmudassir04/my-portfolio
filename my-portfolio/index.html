@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syed Mudassir | Data Analyst &amp; Aspiring Data Engineer</title>
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              alabaster: '#FFFFFF',
+              charcoal: '#0F172A',
+              ashGray: '#334155',
+              mutedSlate: '#475569',
+              trustBlue: '#2563EB',
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Devicon CDN for Authentic Language & Tech Logos -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <!-- Plotly.js CDN for Interactive Data Sandbox -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-alabaster text-ashGray font-body antialiased selection:bg-trustBlue selection:text-white overflow-x-hidden">
+
+    <!-- =================================================================
+         FIXED NAVIGATION BAR (Polished Labels + Theme Toggle + Resume CTA)
+         ================================================================= -->
+    <header class="fixed top-0 left-0 w-full bg-alabaster/90 backdrop-blur-md border-b border-gray-200 z-50 h-16">
+        <div class="max-w-6xl mx-auto px-6 h-full flex items-center justify-between gap-4">
+            <a href="#" onclick="scrollToTop(event)" class="font-heading font-bold text-charcoal text-lg tracking-tight cursor-pointer shrink-0">
+                Syed Mudassir<span class="text-trustBlue">.</span>
+            </a>
+
+            <!-- Polished Navigation Links (Image 4) -->
+            <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-charcoal">
+                <a href="#who-am-i" class="hover:text-trustBlue transition-colors">About</a>
+                <a href="#my-knowledge" class="hover:text-trustBlue transition-colors">Knowledge</a>
+                <a href="#my-skills" class="hover:text-trustBlue transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-trustBlue transition-colors">Projects</a>
+                <a href="#my-experiences" class="hover:text-trustBlue transition-colors">Experience</a>
+                <a href="#contact" class="hover:text-trustBlue transition-colors">Contact</a>
+            </nav>
+
+            <!-- Right Utilities: Light/Dark Toggle + Resume Download CTA -->
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Light/Dark Mode"
+                    class="font-code text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-charcoal hover:border-trustBlue transition-colors flex items-center gap-1.5 cursor-pointer">
+                    <span id="theme-toggle-icon">&#9789;</span>
+                    <span id="theme-toggle-label">Dark</span>
+                </button>
+                <a href="assets/Syed_Mudassir_Resume.pdf" download="Syed_Mudassir_Resume.pdf"
+                    class="font-code text-xs font-medium bg-trustBlue text-white px-3.5 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-2xs whitespace-nowrap">
+                    Resume (PDF) &darr;
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-6xl mx-auto px-6">
+
+        <!-- =================================================================
+             1. HERO SECTION (100vh + Prominent Resume CTA & Direct Icon Links)
+             ================================================================= -->
+        <section id="hero" class="min-h-screen pt-16 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left: Seamless Blended Video Space -->
+            <div class="md:col-span-6 relative flex items-center justify-center py-20 ambient-video-blend rounded-full">
+                <div class="text-center space-y-3 cursor-pointer group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-blue-50/90 text-trustBlue flex items-center justify-center group-hover:scale-110 group-hover:bg-trustBlue group-hover:text-white transition-all duration-300 shadow-sm">
+                        <svg class="w-6 h-6 translate-x-0.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                        </svg>
+                    </div>
+                    <p class="font-code text-xs text-charcoal font-medium tracking-wider uppercase group-hover:text-trustBlue transition-colors">
+                        Introductory Video Stream
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Monumental Bold Typography + Prominent CTAs & Direct Links -->
+            <div class="md:col-span-6 flex flex-col items-start md:items-end justify-center text-left md:text-right space-y-6">
+                <h1 class="font-heading text-6xl sm:text-7xl lg:text-8xl font-bold text-charcoal tracking-tight leading-[0.95]">
+                    Syed<br>Mudassir<span class="text-trustBlue">.</span>
+                </h1>
+
+                <!-- Prominent Action Row (Image 6 Recommendation #4) -->
+                <div class="flex flex-wrap items-center md:justify-end gap-3 pt-2">
+                    <a href="assets/Syed_Mudassir_Resume.pdf" download="Syed_Mudassir_Resume.pdf"
+                        class="bg-trustBlue text-white font-heading font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2">
+                        <span>Download Resume (PDF)</span>
+                        <span>&darr;</span>
+                    </a>
+                    <a href="#projects"
+                        class="border border-gray-300 text-charcoal font-heading font-semibold text-sm px-5 py-2.5 rounded-lg hover:border-trustBlue hover:text-trustBlue transition-colors">
+                        Explore Projects &rarr;
+                    </a>
+                </div>
+
+                <!-- Direct Icon Links: GitHub, LinkedIn, Email -->
+                <div class="flex items-center gap-4 pt-1">
+                    <a href="https://github.com/syedmudassir04" target="_blank" rel="noopener" aria-label="GitHub"
+                        class="flex items-center gap-1.5 font-code text-xs text-charcoal hover:text-trustBlue transition-colors border border-gray-200 px-3 py-1.5 rounded-lg bg-white">
+                        <i class="devicon-github-original text-sm"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/syed-mudassir24177/" target="_blank" rel="noopener" aria-label="LinkedIn"
+                        class="flex items-center gap-1.5 font-code text-xs text-charcoal hover:text-trustBlue transition-colors border border-gray-200 px-3 py-1.5 rounded-lg bg-white">
+                        <i class="devicon-linkedin-plain text-trustBlue text-sm"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:syedmudassir24177@gmail.com" aria-label="Email"
+                        class="flex items-center gap-1.5 font-code text-xs text-charcoal hover:text-trustBlue transition-colors border border-gray-200 px-3 py-1.5 rounded-lg bg-white">
+                        <span class="text-trustBlue font-bold">@</span>
+                        <span>Email</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             2. ABOUT / WHO AM I ? (50/50 Split + Leverage / My Traits)
+             ================================================================= -->
+        <section id="who-am-i" class="min-h-screen pt-20 pb-12 flex flex-col justify-center gap-14 scroll-mt-4">
+            
+            <!-- Upper Half: Balanced 50/50 Narrative & Mission/Goal/Values -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
+                
+                <!-- Left Column: Metadata + Heading + Single Balanced Paragraph -->
+                <div class="lg:col-span-6 flex flex-col justify-between py-1">
+                    <div class="space-y-3">
+                        <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider block">
+                            Data Analyst | Aspiring Data Engineer
+                        </span>
+                        <h2 class="font-heading text-3xl sm:text-4xl font-bold text-charcoal">
+                            Who am I ?
+                        </h2>
+                    </div>
+                    <p class="text-base sm:text-[17px] text-ashGray leading-[1.85] pt-4">
+                        Hi! I am <strong class="text-charcoal font-semibold">Syed Mudassir</strong>, a data analyst and aspiring data engineer who draws understandable insights from complex data to drive accurate, purpose-driven decisions. Grounded by a structured approach to architecture and a steady mindset under pressure, I specialize in transforming raw, noisy datasets into governed pipelines, clear analytical models, and reliable data ecosystems that organizations can trust when complexity spikes.
+                    </p>
+                </div>
+
+                <!-- Right Column: My Mission, My Goal & My Values -->
+                <div class="lg:col-span-6 flex flex-col justify-between border-l border-gray-200 pl-8 py-1 space-y-6">
+                    <div class="space-y-1">
+                        <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Purpose driven</span>
+                        <h3 class="font-heading text-lg font-semibold text-charcoal">My Mission</h3>
+                        <p class="text-sm text-ashGray leading-relaxed">
+                            My Mission is to use repeated patterns from data and engineer data ecosystems which can make a positive impact upon the world we live in.
+                        </p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Focused</span>
+                        <h3 class="font-heading text-lg font-semibold text-charcoal">My Goal</h3>
+                        <p class="text-sm text-ashGray leading-relaxed">
+                            My goal is to become a data engineer who builds and manages complex data ecosystems to empower companies which are trying to make a positive impact upon the world.
+                        </p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">My beliefs</span>
+                        <h3 class="font-heading text-lg font-semibold text-charcoal">My Values</h3>
+                        <p class="text-sm text-ashGray leading-relaxed">
+                            My core values include <strong class="text-charcoal font-medium">Excellence, Integrity, Trustworthiness, Responsibility, Patience, and Perseverance.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lower Half: Leverage / My Traits -->
+            <div class="border-t border-gray-200 pt-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Leverage</span>
+                        <h3 class="font-heading text-xl font-bold text-charcoal mt-0.5">My Traits</h3>
+                    </div>
+                    <!-- High-Contrast Affordance Badge (Fixes Image 1 Critique) -->
+                    <div class="inline-flex items-center gap-2 font-code text-xs font-medium text-charcoal bg-blue-50/90 border border-blue-200 px-3.5 py-1.5 rounded-full shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-trustBlue animate-pulse"></span>
+                        <span>Hover or tap any trait to inspect STAR execution</span>
+                    </div>
+                </div>
+
+                <div id="traits-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-6"></div>
+            </div>
+
+        </section>
+
+        <!-- =================================================================
+             3. KNOWLEDGE (Starts at 2007 · Unbundled Coursework · Scrollable)
+             ================================================================= -->
+        <section id="my-knowledge" class="min-h-screen pt-20 pb-12 flex flex-col justify-center gap-16 scroll-mt-4">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="space-y-1">
+                    <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Chronological Foundation</span>
+                    <h2 class="font-heading text-3xl font-bold text-charcoal">My Knowledge</h2>
+                </div>
+                <!-- High-Contrast Affordance Badge (Fixes Image 1 Critique) -->
+                <div class="inline-flex items-center gap-2 font-code text-xs font-medium text-charcoal bg-blue-50/90 border border-blue-200 px-3.5 py-1.5 rounded-full shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-trustBlue animate-pulse"></span>
+                    <span>Hover or tap to preview &middot; <strong class="text-trustBlue">Click any item</strong> for full syllabus</span>
+                </div>
+            </div>
+
+            <!-- Middle: Alternating Horizontal Timeline (8 Nodes Starting at 2007) -->
+            <div class="relative w-full py-16 overflow-visible">
+                <div class="hidden lg:block absolute top-1/2 left-0 right-0 -translate-y-1/2 h-[1.5px] bg-gray-200"></div>
+                <div id="kb-line-nodes" class="relative z-10 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-y-14 lg:gap-y-0"></div>
+            </div>
+
+            <!-- Lower Half: 2-Column Scrollable Layout (Currently Learning & Verified Certificates) -->
+            <div class="border-t border-gray-200 pt-8">
+                <div id="knowledge-expansion-grid" class="grid grid-cols-1 md:grid-cols-2 gap-12"></div>
+            </div>
+
+        </section>
+
+        <!-- =================================================================
+             4. SKILLS (3-Column Balanced Grid · Atomic Pills · Click-to-Filter)
+             ================================================================= -->
+        <section id="my-skills" class="min-h-screen pt-20 pb-16 flex flex-col justify-center gap-8 scroll-mt-4">
+            
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Professional Skillset</span>
+                    <h2 class="font-heading text-3xl font-bold text-charcoal">My Skills</h2>
+                </div>
+                <!-- High-Contrast Affordance Cue (Fixes Image 1, 2, 3 & 6) -->
+                <div class="inline-flex flex-wrap items-center gap-2 font-code text-xs font-medium text-charcoal bg-blue-50/90 border border-blue-200 px-4 py-2 rounded-full shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-trustBlue animate-pulse"></span>
+                    <span>Hover/Tap any skill for XYZ accomplishment &middot; <strong class="text-trustBlue">Click any skill pill</strong> to filter Projects &amp; Experience</span>
+                </div>
+            </div>
+
+            <!-- 3-Column Responsive Grid (Fixes Image 3 Unbalanced White Space & Overcrowding) -->
+            <div id="skills-matrix-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-gray-200"></div>
+
+        </section>
+
+        <!-- =================================================================
+             5. PROJECTS & LIVE DEMOS + INTERACTIVE ANALYTICS SANDBOX (Image 5 & 6)
+             ================================================================= -->
+        <section id="projects" class="min-h-screen pt-20 pb-16 flex flex-col justify-center gap-12 scroll-mt-4">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Live Deployments, Architecture &amp; Repos</span>
+                    <h2 class="font-heading text-3xl font-bold text-charcoal">Featured Projects &amp; Interactive Sandbox</h2>
+                </div>
+
+                <!-- Active Skill Filter Indicator Banner -->
+                <div id="active-skill-filter-bar" class="hidden items-center gap-3 bg-blue-50 border border-blue-200 px-4 py-2 rounded-full">
+                    <span class="font-code text-xs text-charcoal">Filtered by Skill: <strong id="active-skill-name" class="text-trustBlue">Python</strong></span>
+                    <button onclick="clearSkillFilter()" class="font-code text-xs font-semibold text-trustBlue hover:underline cursor-pointer">
+                        Reset Filter &#10005;
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Interactive Project Cards Grid (Image 5) -->
+            <div id="projects-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- Interactive Browser Data Visualization Sandbox (Image 6 Recommendation #5) -->
+            <div class="border border-gray-200 rounded-2xl p-6 bg-gray-50/40 space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-200 pb-4">
+                    <div class="space-y-1">
+                        <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Interactive Data &amp; ML Sandbox (Plotly.js)</span>
+                        <h3 class="font-heading text-xl font-bold text-charcoal">Live Telemetry &amp; Model Telemetry Explorer</h3>
+                        <p class="font-body text-xs text-ashGray">Interact directly with sample outputs from my Epidemiological Predictor, Data Governance Audits, and Biometric Telemetry pipelines.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="renderSandboxChart('outbreak')" id="sandbox-btn-outbreak" class="sandbox-tab font-code text-xs px-3 py-1.5 rounded-lg bg-trustBlue text-white font-medium transition-colors cursor-pointer">
+                            XGBoost Outbreak Risk
+                        </button>
+                        <button onclick="renderSandboxChart('governance')" id="sandbox-btn-governance" class="sandbox-tab font-code text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-charcoal hover:border-trustBlue transition-colors cursor-pointer">
+                            Data Governance Quality
+                        </button>
+                        <button onclick="renderSandboxChart('biometric')" id="sandbox-btn-biometric" class="sandbox-tab font-code text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-charcoal hover:border-trustBlue transition-colors cursor-pointer">
+                            Arduino PPG Heartbeat
+                        </button>
+                        <a href="https://github.com/syedmudassir04" target="_blank" rel="noopener" class="font-code text-xs text-trustBlue hover:underline ml-2">
+                            View Notebooks on GitHub &nearr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Live Interactive Plotly Container -->
+                <div id="plotly-sandbox-chart" class="w-full h-[320px] rounded-xl bg-white border border-gray-100 p-2"></div>
+            </div>
+
+        </section>
+
+        <!-- =================================================================
+             6. EXPERIENCE (STAR Format Hover & Click Breakdown)
+             ================================================================= -->
+        <section id="my-experiences" class="min-h-screen pt-24 pb-20 flex flex-col justify-center gap-14 scroll-mt-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="space-y-1">
+                    <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Applied Engineering &amp; Impact</span>
+                    <h2 class="font-heading text-3xl font-bold text-charcoal">My Experiences</h2>
+                </div>
+                <!-- High-Contrast Affordance Badge -->
+                <div class="inline-flex items-center gap-2 font-code text-xs font-medium text-charcoal bg-blue-50/90 border border-blue-200 px-3.5 py-1.5 rounded-full shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-trustBlue animate-pulse"></span>
+                    <span>Hover/Tap for STAR overview &middot; <strong class="text-trustBlue">Click any node</strong> for full stack</span>
+                </div>
+            </div>
+
+            <div class="relative max-w-4xl mx-auto w-full py-4 overflow-visible">
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[1.5px] bg-gray-200"></div>
+                <div id="work-flowchart-nodes" class="space-y-10 relative z-10"></div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             7. CONTACT (Connected to syedmudassir24177@gmail.com)
+             ================================================================= -->
+        <section id="contact" class="min-h-screen pt-20 pb-8 flex flex-col justify-between border-t border-gray-100 scroll-mt-4">
+            
+            <div class="my-auto py-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                    
+                    <!-- Left Column: Pitch, Availability & Social Channels -->
+                    <div class="lg:col-span-5 space-y-10">
+                        <div class="space-y-3">
+                            <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">Initiate Connection</span>
+                            <h2 class="font-heading text-4xl sm:text-5xl font-bold text-charcoal tracking-tight">Contact Me</h2>
+                            <p class="text-base text-ashGray leading-relaxed pt-1">
+                                Have a data challenge, governance initiative, or engineering role where trust and clarity matter? Reach out through the form or connect on my social channels.
+                            </p>
+                        </div>
+
+                        <!-- Operational Readiness Readout -->
+                        <div class="space-y-2 border-l-2 border-trustBlue pl-4">
+                            <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider block">Current Availability</span>
+                            <p class="font-heading text-sm font-semibold text-charcoal">Open to Data Analyst &amp; Data Engineering Roles</p>
+                            <p class="font-code text-xs text-mutedSlate">Direct Dispatch: syedmudassir24177@gmail.com</p>
+                        </div>
+
+                        <!-- Social Profiles -->
+                        <div class="space-y-3">
+                            <span class="font-code text-xs text-mutedSlate uppercase tracking-wider block">Social Profiles</span>
+                            <div class="grid grid-cols-2 gap-y-4 gap-x-6 pt-1 text-sm font-medium">
+                                <a href="https://www.linkedin.com/in/syed-mudassir24177/" target="_blank" rel="noopener" class="flex items-center space-x-2 text-charcoal hover:text-trustBlue transition-colors group">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-trustBlue"></span>
+                                    <span class="group-hover:translate-x-0.5 transition-transform">LinkedIn &nearr;</span>
+                                </a>
+                                <a href="https://github.com/syedmudassir04" target="_blank" rel="noopener" class="flex items-center space-x-2 text-charcoal hover:text-trustBlue transition-colors group">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-trustBlue"></span>
+                                    <span class="group-hover:translate-x-0.5 transition-transform">GitHub &nearr;</span>
+                                </a>
+                                <a href="https://x.com/SyedMudass177" target="_blank" rel="noopener" class="flex items-center space-x-2 text-charcoal hover:text-trustBlue transition-colors group">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-trustBlue"></span>
+                                    <span class="group-hover:translate-x-0.5 transition-transform">Twitter (X) &nearr;</span>
+                                </a>
+                                <a href="https://www.instagram.com/syed_mudassir_1707/" target="_blank" rel="noopener" class="flex items-center space-x-2 text-charcoal hover:text-trustBlue transition-colors group">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-trustBlue"></span>
+                                    <span class="group-hover:translate-x-0.5 transition-transform">Instagram &nearr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Minimalist Aesthetic Contact Form -->
+                    <form id="contact-form" action="https://formsubmit.co/syedmudassir24177@gmail.com" method="POST" onsubmit="handleContactSubmit(event)" class="lg:col-span-7 space-y-8 pt-2">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="font-code text-xs text-charcoal uppercase">Your Name *</label>
+                                <input type="text" name="name" required placeholder="Syed Mudassir" 
+                                    class="w-full border-b border-gray-300 bg-transparent py-3 text-sm text-charcoal focus:border-trustBlue focus:outline-none transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-code text-xs text-charcoal uppercase">Your Email *</label>
+                                <input type="email" name="email" required placeholder="syedmudassir24177@gmail.com" 
+                                    class="w-full border-b border-gray-300 bg-transparent py-3 text-sm text-charcoal focus:border-trustBlue focus:outline-none transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="font-code text-xs text-charcoal uppercase">Affiliation</label>
+                                <input type="text" name="affiliation" placeholder="Independent / Enterprise / Team" 
+                                    class="w-full border-b border-gray-300 bg-transparent py-3 text-sm text-charcoal focus:border-trustBlue focus:outline-none transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-code text-xs text-charcoal uppercase">Purpose of Inquiry *</label>
+                                <input type="text" name="subject" required placeholder="Opportunity / Collaboration" 
+                                    class="w-full border-b border-gray-300 bg-transparent py-3 text-sm text-charcoal focus:border-trustBlue focus:outline-none transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="font-code text-xs text-charcoal uppercase">Message *</label>
+                            <textarea name="message" rows="4" required placeholder="Tell me about the Opportunity / Collaboration" 
+                                class="w-full border-b border-gray-300 bg-transparent py-3 text-sm text-charcoal focus:border-trustBlue focus:outline-none transition-colors resize-none"></textarea>
+                        </div>
+
+                        <div class="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span id="form-feedback" class="font-code text-xs text-mutedSlate">Connected to syedmudassir24177@gmail.com</span>
+                            <button type="submit" id="contact-submit-btn" class="bg-trustBlue text-white font-heading font-semibold text-sm px-8 py-3.5 rounded-lg hover:bg-blue-700 transition-colors shadow-sm cursor-pointer">
+                                Send Message &rarr;
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- INTEGRATED FOOTER AT BOTTOM OF CONTACT SCREEN -->
+            <footer class="border-t border-gray-100 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-mutedSlate font-code">
+                <p>&copy; 2026 Syed Mudassir. Engineered with trust &amp; clarity.</p>
+                <p class="mt-2 sm:mt-0">Data Analyst &middot; Open to Opportunities</p>
+            </footer>
+
+        </section>
+
+    </main>
+
+    <!-- =================================================================
+         UNIVERSAL DEEP-DIVE INSPECTION MODAL (Subjects, Courses & Stack)
+         ================================================================= -->
+    <div id="inspection-modal" class="modal-backdrop fixed inset-0 z-[100] bg-charcoal/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6" onclick="closeInspectionModal(event)">
+        <div class="modal-panel bg-alabaster border border-gray-200 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[86vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-5 border-b border-gray-100 flex items-start justify-between gap-4 bg-gray-50/50">
+                <div class="space-y-1">
+                    <span id="modal-meta" class="font-code text-xs font-medium text-trustBlue bg-blue-50 px-2.5 py-0.5 rounded inline-block">Metadata</span>
+                    <h3 id="modal-title" class="font-heading text-xl sm:text-2xl font-bold text-charcoal">Modal Heading</h3>
+                    <p id="modal-subtitle" class="font-body text-xs sm:text-sm text-mutedSlate">Subtitle description</p>
+                </div>
+                <button onclick="closeInspectionModal()" class="p-2 rounded-lg text-mutedSlate hover:text-charcoal hover:bg-gray-100 transition-colors font-code text-xs shrink-0 cursor-pointer">
+                    ESC &#10005;
+                </button>
+            </div>
+
+            <!-- Modal Scrollable Content Body -->
+            <div id="modal-body" class="p-6 overflow-y-auto space-y-4 divide-y divide-gray-100">
+                <!-- Populated dynamically by script.js -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div id="modal-footer" class="px-6 py-3.5 border-t border-gray-100 bg-gray-50/40 flex items-center justify-between text-xs font-code text-mutedSlate">
+                <span id="modal-footer-count">Click any item row to expand its topics in depth</span>
+                <div class="flex items-center gap-4">
+                    <a id="modal-external-link" href="#" target="_blank" rel="noopener" class="hidden text-trustBlue hover:underline font-medium">Open Course Link &nearr;</a>
+                    <button onclick="closeInspectionModal()" class="text-charcoal hover:text-trustBlue font-medium cursor-pointer">Close Window</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
