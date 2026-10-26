@@ -56,10 +56,6 @@ window.addEventListener('scroll', () => {
   closeAllTouchPopups();
 }, { passive: true });
 
-/**
- * Positions every .node-popup using fixed viewport coordinates (width: 320px)
- * and provides a full tap-toggle fallback on mobile & touchscreens.
- */
 function bindDynamicPopup(triggerEl, options = {}) {
   const popup = triggerEl.querySelector('.node-popup');
   if (!popup) return;
@@ -96,7 +92,6 @@ function bindDynamicPopup(triggerEl, options = {}) {
 
   triggerEl.addEventListener('mouseenter', updatePosition);
 
-  // Touch accessibility handler (Image 2 fix)
   triggerEl.addEventListener('click', (e) => {
     if (isTouchDevice() && !options.alwaysTriggerClickOnTouch) {
       if (!triggerEl.classList.contains('touch-open')) {
@@ -119,7 +114,7 @@ const modalBody = document.getElementById('modal-body');
 const modalFooterCount = document.getElementById('modal-footer-count');
 const modalExternalLink = document.getElementById('modal-external-link');
 
-function openInspectionModal({ meta, title, subtitle, bodyHTML, footerText, externalUrl }) {
+function openInspectionModal({ meta, title, subtitle, bodyHTML, footerText, externalUrl, externalLabel }) {
   closeAllTouchPopups();
   modalMeta.textContent = meta;
   modalTitle.textContent = title;
@@ -129,6 +124,7 @@ function openInspectionModal({ meta, title, subtitle, bodyHTML, footerText, exte
 
   if (externalUrl) {
     modalExternalLink.href = externalUrl;
+    modalExternalLink.innerHTML = `${externalLabel || 'Open Repository / Link'} &nearr;`;
     modalExternalLink.classList.remove('hidden');
   } else {
     modalExternalLink.classList.add('hidden');
@@ -251,7 +247,6 @@ function initTraitsGrid() {
     el.className = 'node-group relative pt-3 pb-2 border-t border-gray-100 cursor-pointer group hover:z-50';
 
     el.innerHTML = `
-      <!-- FIXED-WIDTH STAR HOVER/TAP POPUP -->
       <div class="node-popup p-4 bg-white border border-gray-200 rounded-xl shadow-2xl text-left">
         <div class="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-gray-100">
           <h4 class="font-heading text-sm font-bold text-charcoal">${trait.title}</h4>
@@ -265,7 +260,6 @@ function initTraitsGrid() {
         </div>
       </div>
 
-      <!-- VISIBLE TRAIT ITEM -->
       <div class="space-y-1.5">
         <div class="flex items-center justify-between">
           <h4 class="font-heading text-sm font-bold text-charcoal group-hover:text-trustBlue transition-colors">
@@ -286,7 +280,7 @@ function initTraitsGrid() {
 
 
 /* ==========================================================================
-   2. MY KNOWLEDGE (Unbundled Relevant Coursework · Courses & Verified Certificates)
+   2. MY KNOWLEDGE (Relevant Coursework Inside Verified Certificates)
    ========================================================================== */
 const icseSubjectsArchive = [
   {
@@ -400,7 +394,7 @@ const cseSubjectsArchive = [
   {
     meta: "P&S · Sem III · 3BS305HS · 4 Credits",
     name: "Probability Distributions, Statistical Inference & Regression Analysis",
-    desc: "Core topics learnt: Discrete and continuous probability distributions, skewness/kurtosis, Pearson and Spearman correlation, linear regression, and Z/t/F/Chi-Square hypothesis testing.",
+    desc: "Core topics learnt: Discrete and continuous probability distributions, skewness/kurtosis, Karl Pearson and Spearman correlation, linear regression, and Z/t/F/Chi-Square hypothesis testing.",
     topics: ["Random Variables, Discrete (Binomial, Poisson) & Continuous (Normal, Exponential) Distributions", "Measures of Central Tendency, Skewness, Kurtosis & Moments", "Karl Pearson's Correlation, Spearman's Rank Correlation & Linear Regression", "Large Sample Tests (Z-test) & Small Sample Tests (Student's t-test, F-test, Chi-Square)"]
   },
   {
@@ -537,9 +531,9 @@ const cseSubjectsArchive = [
   },
   {
     meta: "STM · Sem VIII · 3PE823CS · 3 Credits",
-    name: "Software Testing Methodologies (Path/Dataflow Testing, Selenium, JMeter & WinRunner)",
-    desc: "Core topics learnt: Software bug taxonomy, control-flow and path testing, transaction/dataflow testing, domain boundary analysis, logic decision tables, state-graph testing, and automated testing with Selenium, JMeter, and WinRunner.",
-    topics: ["Unit I — Dichotomies of Testing, Bug Taxonomy, Control Flow Graphs (CFG) & Path Testing", "Unit II — Transaction Flow Testing & Dataflow Testing Strategies", "Unit III — Domain Testing (Boundary Value Analysis) & Path Products / Regular Expressions", "Unit IV — Logic-Based Testing (Decision Tables, KV Charts) & State-Graph Transition Testing", "Unit V — Graph Matrices & Automated Testing Tools: Selenium WebDriver, Apache JMeter & WinRunner"]
+    name: "Software Testing Methodologies (Path/Dataflow Testing, Domain & Logic Testing)",
+    desc: "Core topics learnt: Software bug taxonomy, control-flow and path testing, transaction/dataflow testing, domain boundary analysis, logic decision tables, and state-graph testing.",
+    topics: ["Unit I — Dichotomies of Testing, Bug Taxonomy, Control Flow Graphs (CFG) & Path Testing", "Unit II — Transaction Flow Testing & Dataflow Testing Strategies", "Unit III — Domain Testing (Boundary Value Analysis) & Path Products / Regular Expressions", "Unit IV — Logic-Based Testing (Decision Tables, KV Charts) & State-Graph Transition Testing", "Unit V — Graph Matrices & Automated Functional / Regression Verification"]
   },
   {
     meta: "MEFA & Capstones · Sem VII & VIII · 3HS802HS, 3PW766CS, 3PW767CS & 3PW868CS",
@@ -676,7 +670,6 @@ const knowledgeNodes = [
   }
 ];
 
-// Unbundled Relevant Coursework + Exact Heading Names ("Currently Learning" & "Verified Certificates")
 const knowledgeExpansionData = [
   {
     meta: "Always Learning",
@@ -734,8 +727,75 @@ const knowledgeExpansionData = [
           "Security Model: Organization-Wide Defaults (OWD), Role Hierarchies, Profiles, Permission Sets & Field-Level Security",
           "Declarative & Programmatic Automation: Record-Triggered Flows, Approval Processes, Apex Triggers & Lightning Dashboards"
         ]
+      }
+    ]
+  },
+  {
+    meta: "Courses",
+    heading: "Verified Certificates",
+    items: [
+      {
+        name: "Artificial Intelligence",
+        badge: "UASL · ISO 9001:2015",
+        hoverMeta: "Sep - Dec 2025",
+        detail: "Core topics learnt: 4-month ISO 9001:2015 certified curriculum covering statistical preprocessing, supervised and ensemble machine learning (Random Forest, XGBoost), deep computer vision (OpenCV, YOLOv8), NLP, and LLM workflows.",
+        topics: [
+          "Supervised & Unsupervised Machine Learning (Regression, Random Forest, XGBoost, SVM, K-Means, PCA)",
+          "Statistical Data Profiling, Feature Scaling (fit_transform) & Cross-Validation",
+          "Deep Learning & Computer Vision with OpenCV & Ultralytics YOLOv8",
+          "Natural Language Processing, Generative AI APIs & Production Model Deployment"
+        ]
       },
-      // SEPARATED INDIVIDUAL RELEVANT COURSEWORK ITEMS
+      {
+        name: "Cisco Operating Systems",
+        badge: "Basics",
+        hoverMeta: "Basics · Dec 2025",
+        detail: "Core topics learnt: Operating system kernel fundamentals, process and thread scheduling, virtual memory allocation, Linux command-line administration, bash scripting, Windows administration, and POSIX user/file security.",
+        topics: [
+          "Operating System Basics: Kernel Architecture, Hardware Abstraction, Processes, Threads & Memory Allocation",
+          "Linux Command Line Interface (CLI), File Systems, Piping, Package Management & Bash Scripting",
+          "Windows OS Administration, Registry, Services, Disk Management & PowerShell Basics",
+          "Host Security: User/Group Permissions (chmod/chown), Firewalls, Patching & Virtual Machine Environments"
+        ]
+      },
+      {
+        name: "Cisco CCNAv7: Introduction to Networks",
+        badge: "Cisco NetAcad",
+        hoverMeta: "Completed Aug 2023",
+        detail: "Core topics learnt: Cisco IOS switch and router CLI configuration, OSI and TCP/IP networking models, Ethernet MAC switching, IPv4 CIDR/VLSM subnetting, IPv6 addressing, ICMP diagnostics, and transport-layer security.",
+        topics: [
+          "Cisco IOS Switch & Router CLI Configuration, SSH Security & Interface Management",
+          "OSI & TCP/IP Protocol Suites, Ethernet Framing, MAC Tables & ARP",
+          "IPv4 Subnetting, VLSM, IPv6 Addressing, Static/Dynamic Routing & ICMP Troubleshooting",
+          "Transport Layer TCP/UDP Reliability, Port Numbers & Small-Network Security Hardening"
+        ]
+      },
+      {
+        name: "Cisco Introduction to Internet of Things (IoT)",
+        badge: "Cisco NetAcad",
+        hoverMeta: "Completed Mar 2023",
+        detail: "Core topics learnt: Convergence of Operational Technology (OT) and IT networks, hardware prototyping with sensors, actuators, and Arduino microcontrollers, Python telemetry automation, and IoT network security.",
+        topics: [
+          "Digital Transformation & Convergence of Operational Technology (OT) and IT Networks",
+          "Hardware Prototyping with Sensors, Actuators, Arduino Microcontrollers & Python",
+          "IoT Big Data Streaming, Fog/Cloud Computing Models & Intent-Based Network Automation",
+          "End-to-End IoT Device & Network Security Practices"
+        ]
+      },
+      {
+        name: "Take Charge of Your Time — Ankur Warikoo",
+        badge: "Productivity Mastery",
+        hoverMeta: "Time Management",
+        detail: "Core topics learnt: Comprehensive time auditing, the Eisenhower urgency-importance matrix, calendar timeboxing over to-do lists, cognitive energy alignment, eliminating context-switching, and weekly review systems.",
+        topics: [
+          "Deconstructing the Time Illusion: Shifting from 'Lack of Time' to Deliberate Priority Allocation",
+          "The Comprehensive Time Audit: Tracking & Categorizing Hours Across High-Leverage vs Low-Value Tasks",
+          "The Eisenhower Priority Matrix & Eliminating Fake Urgency",
+          "Calendar Blocking over To-Do Lists: Timeboxing Deep-Work Blocks, Buffer Zones & Zero-Context-Switching Sprints",
+          "Managing Energy & Procrastination: Aligning Peak Cognitive Windows with Complex Engineering Tasks",
+          "Building Sustainable Systems: Weekly Reviews & Habit Stacking"
+        ]
+      },
       {
         name: "Database Management Systems (DBMS)",
         badge: "Relevant Coursework",
@@ -866,76 +926,8 @@ const knowledgeExpansionData = [
         name: "Software Engineering & Testing Methodologies",
         badge: "Relevant Coursework",
         hoverMeta: "3PC508CS & 3PE823CS",
-        detail: "Core topics learnt: Agile Scrum and Waterfall SDLC, UML system modeling, control-flow/dataflow path testing, domain boundary testing, and automated QA with Selenium, JMeter, and WinRunner.",
-        topics: ["Agile Scrum, Waterfall SDLC, SRS & UML Diagrams", "Control-Flow Path Testing, Dataflow & Domain Boundary Testing", "Automated Regression & Load Testing with Selenium, JMeter & WinRunner"]
-      }
-    ]
-  },
-  {
-    meta: "Courses",
-    heading: "Verified Certificates",
-    items: [
-      {
-        name: "Artificial Intelligence",
-        badge: "UASL · ISO 9001:2015",
-        hoverMeta: "Sep - Dec 2025",
-        detail: "Core topics learnt: 4-month ISO 9001:2015 certified curriculum covering statistical preprocessing, supervised and ensemble machine learning (Random Forest, XGBoost), deep computer vision (OpenCV, YOLOv8), NLP, and LLM workflows.",
-        topics: [
-          "Supervised & Unsupervised Machine Learning (Regression, Random Forest, XGBoost, SVM, K-Means, PCA)",
-          "Statistical Data Profiling, Feature Scaling (fit_transform) & Cross-Validation",
-          "Deep Learning & Computer Vision with OpenCV & Ultralytics YOLOv8",
-          "Natural Language Processing, Generative AI APIs & Production Model Deployment"
-        ]
-      },
-      {
-        name: "Cisco Operating Systems",
-        badge: "Basics",
-        hoverMeta: "Basics · Dec 2025",
-        detail: "Core topics learnt: Operating system kernel fundamentals, process and thread scheduling, virtual memory allocation, Linux command-line administration, bash scripting, Windows administration, and POSIX user/file security.",
-        topics: [
-          "Operating System Basics: Kernel Architecture, Hardware Abstraction, Processes, Threads & Memory Allocation",
-          "Linux Command Line Interface (CLI), File Systems, Piping, Package Management & Bash Scripting",
-          "Windows OS Administration, Registry, Services, Disk Management & PowerShell Basics",
-          "Host Security: User/Group Permissions (chmod/chown), Firewalls, Patching & Virtual Machine Environments"
-        ]
-      },
-      {
-        name: "Cisco CCNAv7: Introduction to Networks",
-        badge: "Cisco NetAcad",
-        hoverMeta: "Completed Aug 2023",
-        detail: "Core topics learnt: Cisco IOS switch and router CLI configuration, OSI and TCP/IP networking models, Ethernet MAC switching, IPv4 CIDR/VLSM subnetting, IPv6 addressing, ICMP diagnostics, and transport-layer security.",
-        topics: [
-          "Cisco IOS Switch & Router CLI Configuration, SSH Security & Interface Management",
-          "OSI & TCP/IP Protocol Suites, Ethernet Framing, MAC Tables & ARP",
-          "IPv4 Subnetting, VLSM, IPv6 Addressing, Static/Dynamic Routing & ICMP Troubleshooting",
-          "Transport Layer TCP/UDP Reliability, Port Numbers & Small-Network Security Hardening"
-        ]
-      },
-      {
-        name: "Cisco Introduction to Internet of Things (IoT)",
-        badge: "Cisco NetAcad",
-        hoverMeta: "Completed Mar 2023",
-        detail: "Core topics learnt: Convergence of Operational Technology (OT) and IT networks, hardware prototyping with sensors, actuators, and Arduino microcontrollers, Python telemetry automation, and IoT network security.",
-        topics: [
-          "Digital Transformation & Convergence of Operational Technology (OT) and IT Networks",
-          "Hardware Prototyping with Sensors, Actuators, Arduino Microcontrollers & Python",
-          "IoT Big Data Streaming, Fog/Cloud Computing Models & Intent-Based Network Automation",
-          "End-to-End IoT Device & Network Security Practices"
-        ]
-      },
-      {
-        name: "Take Charge of Your Time — Ankur Warikoo",
-        badge: "Productivity Mastery",
-        hoverMeta: "Time Management",
-        detail: "Core topics learnt: Comprehensive time auditing, the Eisenhower urgency-importance matrix, calendar timeboxing over to-do lists, cognitive energy alignment, eliminating context-switching, and weekly review systems.",
-        topics: [
-          "Deconstructing the Time Illusion: Shifting from 'Lack of Time' to Deliberate Priority Allocation",
-          "The Comprehensive Time Audit: Tracking & Categorizing Hours Across High-Leverage vs Low-Value Tasks",
-          "The Eisenhower Priority Matrix & Eliminating Fake Urgency",
-          "Calendar Blocking over To-Do Lists: Timeboxing Deep-Work Blocks, Buffer Zones & Zero-Context-Switching Sprints",
-          "Managing Energy & Procrastination: Aligning Peak Cognitive Windows with Complex Engineering Tasks",
-          "Building Sustainable Systems: Weekly Reviews & Habit Stacking"
-        ]
+        detail: "Core topics learnt: Agile Scrum and Waterfall SDLC, UML system modeling, control-flow/dataflow path testing, domain boundary testing, and logic-based decision table verification.",
+        topics: ["Agile Scrum, Waterfall SDLC, SRS & UML Diagrams", "Control-Flow Path Testing, Dataflow & Domain Boundary Testing", "Logic-Based Decision Tables, State Graphs & Functional Regression Verification"]
       }
     ]
   }
@@ -971,7 +963,6 @@ function openKnowledgeNodeModal(node) {
           </div>
         </div>
 
-        <!-- EXPANDABLE IN-DEPTH TOPICS DRAWER -->
         <div id="${drawerId}" class="hidden mt-3 ml-4 p-4 rounded-xl bg-gray-50 border border-gray-200/80 space-y-2">
           <span class="font-code text-[10px] text-trustBlue uppercase tracking-wider block">Topics Covered in Depth</span>
           <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 pt-1">
@@ -1005,7 +996,8 @@ function openCourseSyllabusModal(course) {
     subtitle: course.detail,
     bodyHTML: topicsHTML,
     footerText: `${(course.topics || []).length} Core Syllabus Modules · Verified Curriculum`,
-    externalUrl: course.url || null
+    externalUrl: course.url || null,
+    externalLabel: 'Open Course Link'
   });
 }
 
@@ -1021,7 +1013,6 @@ function initKnowledgeBaseLine() {
     itemEl.className = 'node-group relative flex flex-col items-center justify-center cursor-pointer group hover:z-50';
 
     itemEl.innerHTML = `
-      <!-- FIXED-WIDTH HOVER POPUP CARD -->
       <div class="node-popup p-4 bg-white border border-gray-200 rounded-xl shadow-2xl text-left">
         <div class="flex items-center justify-between gap-2 mb-1.5">
           <span class="font-code text-[10px] font-medium text-trustBlue bg-blue-50 px-2 py-0.5 rounded">${node.meta}</span>
@@ -1031,7 +1022,6 @@ function initKnowledgeBaseLine() {
         <p class="font-body text-xs text-ashGray leading-relaxed">${node.description}</p>
       </div>
 
-      <!-- ALTERNATING LABEL & TIMELINE TICK -->
       <div class="relative flex flex-col items-center">
         <div class="${isAbove ? 'opacity-100' : 'opacity-0 pointer-events-none'} mb-3 flex flex-col items-center text-center transition-transform duration-200 group-hover:-translate-y-1">
           <span class="font-code text-[11px] ${node.isAccent ? 'text-trustBlue font-semibold' : 'text-mutedSlate'}">${node.year}</span>
@@ -1054,7 +1044,6 @@ function initKnowledgeBaseLine() {
     container.appendChild(itemEl);
   });
 
-  // Render 2-Column Scrollable Grid (Showing 3 Items at a Time)
   const expContainer = document.getElementById('knowledge-expansion-grid');
   if (!expContainer) return;
   expContainer.innerHTML = '';
@@ -1087,7 +1076,6 @@ function initKnowledgeBaseLine() {
         </div>
         <span class="font-code text-xs font-medium text-trustBlue bg-blue-50 px-2.5 py-0.5 rounded">Scroll (${col.items.length}) &updownarrow;</span>
       </div>
-      <!-- Scrollable 3-Item Viewport -->
       <div class="three-item-scroll pr-2 divide-y divide-gray-100">
         ${itemsHTML}
       </div>
@@ -1106,113 +1094,142 @@ function initKnowledgeBaseLine() {
 
 
 /* ==========================================================================
-   3. MY SKILLS (Unbundled Atomic Pills · SQL Separated · 3-Column Bento Grid)
+   3. MY SKILLS (3x3 Symmetrical Grid · Consumer Metadata · 1-Sentence Info)
    ========================================================================== */
 const skillCategories = [
   {
-    name: "Languages & SQL Tiers",
-    metaTag: "Core Syntax & Database Tiers",
-    subtitle: "Separated from foundational querying (DQL/DML) to senior governance (DDL/DCL/TCL)",
+    name: "Technical Languages",
+    metaTag: "Core Coding & Querying",
+    subtitle: "Core coding and database languages used to write software, build websites, and manage data.",
     skills: [
-      { name: "Python", filterKey: "Python", icon: "devicon-python-plain colored", meta: "Applied in: All Data Internships & AI Projects", exp: "Accomplished end-to-end data wrangling, statistical modeling, and computer-vision automation, as measured by production deployments across 5+ projects and internships, by doing modular Python scripting and pipeline orchestration." },
-      { name: "SQL (DQL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Analytical Querying · SELECT / Joins / CTEs", exp: "Accomplished rapid multi-table analytical extraction and data auditing, as measured by sub-second reporting queries across APSS and DBMS labs, by doing complex DQL joins, window functions, aggregations, and subqueries." },
-      { name: "SQL (DML)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Data Manipulation · INSERT / UPDATE / MERGE", exp: "Accomplished high-throughput ETL record population and automated database seeding at Artificial Penetration Software Solutions, as measured by 100% referential integrity, by doing structured DML batch upserts and transformations." },
-      { name: "SQL (DDL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Data Engineering · Schemas / Views / Indexes", exp: "Accomplished resilient enterprise schema architecture at Artificial Penetration Software Solutions, as measured by zero-regression Alembic migrations, by doing normalized DDL table design, B+ tree indexing, views, triggers, and stored procedures." },
-      { name: "SQL (DCL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Data Governance · GRANT / REVOKE / RBAC", exp: "Accomplished strict role-based access control and data security compliance at Artificial Penetration Software Solutions, as measured by zero unauthorized table exposures, by doing DCL privilege governance across MySQL and Unity Catalog." },
-      { name: "SQL (TCL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Lead Reliability · COMMIT / ROLLBACK / ACID", exp: "Accomplished fault-tolerant transactional consistency during multi-step pipeline executions, as measured by zero partial-write corruptions, by doing TCL transaction wrapping, savepoints, and ACID rollback handling." },
-      { name: "JavaScript", filterKey: "JavaScript", icon: "devicon-javascript-plain colored", meta: "Applied in: Web Dev & Data Governance", exp: "Accomplished responsive client-side interactivity and internal workflow automation, as measured by faster task execution across Cognifyz and APSS, by doing asynchronous ES6+ JavaScript development." },
-      { name: "Dart", filterKey: "Dart", icon: "devicon-dart-plain colored", meta: "Applied in: Nutritional Tracker App", exp: "Accomplished real-time multi-API nutrition lookups and offline state sync, as measured by smooth 60fps mobile performance, by doing strongly-typed Dart programming with BLoC state management." },
-      { name: "HTML5", filterKey: "HTML5", icon: "devicon-html5-plain colored", meta: "Applied in: Cognifyz Web Internship", exp: "Accomplished accessible, standards-compliant web interfaces, as measured by consistent cross-browser rendering at Cognifyz Technologies, by doing semantic HTML5 document structuring." },
-      { name: "CSS3", filterKey: "CSS3", icon: "devicon-css3-plain colored", meta: "Applied in: Cognifyz & Full-Stack Builds", exp: "Accomplished clean, mobile-first visual hierarchy across web applications, as measured by 100% viewport responsiveness, by doing custom CSS3 Flexbox, Grid, and Tailwind styling." },
-      { name: "PHP", filterKey: "PHP", icon: "devicon-php-plain colored", meta: "Applied in: Cognifyz & Web Tech Lab", exp: "Accomplished dynamic server-side form handling and relational database persistence, as measured by working bookstore and internship modules, by doing backend PHP controller scripting." },
-      { name: "C / C++", filterKey: "C++", icon: "devicon-cplusplus-plain colored", meta: "Applied in: OS Lab & IoT Firmware", exp: "Accomplished low-latency hardware sensor polling and Linux kernel process simulations, as measured by Grade A lab verifications, by doing memory-safe C and C++ system programming." },
-      { name: "Java", filterKey: "Java", icon: "devicon-java-plain colored", meta: "Applied in: ICSE & CSE Java Lab", exp: "Accomplished modular, fault-tolerant desktop and database utilities, as measured by multithreaded lab evaluations, by doing Object-Oriented Java programming with JDBC and Collections." }
+      { name: "Python", filterKey: "Python", icon: "devicon-python-plain colored", meta: "Data Science & Automation Language", exp: "A versatile programming language I use to clean data, automate repetitive tasks, and run AI models." },
+      { name: "SQL (DQL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Database Search & Reporting", exp: "The standard language used to search, filter, and pull specific reports from large company databases." },
+      { name: "SQL (DML)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Database Record Updating", exp: "Commands used to safely add new records, update existing information, and clean outdated rows in a database." },
+      { name: "SQL (DDL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Database Blueprint Design", exp: "Structural commands used to design and build the actual tables, views, and rules that hold company data." },
+      { name: "SQL (DCL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Database Security & Permissions", exp: "Security controls used to grant or restrict who is allowed to view or edit sensitive database records." },
+      { name: "SQL (TCL)", filterKey: "SQL", icon: "devicon-azuresqldatabase-plain colored", meta: "Database Transaction Safety", exp: "Safety checkpoints that ensure multi-step database updates either finish completely or roll back cleanly if an error occurs." },
+      { name: "JavaScript", filterKey: "JavaScript", icon: "devicon-javascript-plain colored", meta: "Interactive Web Scripting", exp: "The programming language that makes websites interactive, responsive, and able to update without reloading the page." },
+      { name: "Dart", filterKey: "Dart", icon: "devicon-dart-plain colored", meta: "Mobile App Language", exp: "A fast, modern programming language used to build smooth mobile apps for both Android and iOS." },
+      { name: "HTML5", filterKey: "HTML5", icon: "devicon-html5-plain colored", meta: "Web Page Structure", exp: "The foundational markup code that defines the headings, text, forms, and layout blocks of a webpage." },
+      { name: "CSS3", filterKey: "CSS3", icon: "devicon-css3-plain colored", meta: "Web Page Visual Styling", exp: "The styling language that controls colors, fonts, spacing, and mobile-friendly layouts on a website." },
+      { name: "PHP", filterKey: "PHP", icon: "devicon-php-plain colored", meta: "Backend Web Scripting", exp: "A server-side language used to process web forms, manage user logins, and connect websites to databases." },
+      { name: "C / C++", filterKey: "C++", icon: "devicon-cplusplus-plain colored", meta: "System & Hardware Programming", exp: "High-speed programming languages used to control computer memory, operating systems, and electronic sensors." },
+      { name: "Java", filterKey: "Java", icon: "devicon-java-plain colored", meta: "Enterprise Software Language", exp: "A reliable, object-oriented language widely used to build large-scale business software and desktop tools." }
     ]
   },
   {
     name: "Python Libraries",
-    metaTag: "Data, ML & Vision Modules",
-    subtitle: "Individual libraries for wrangling, modeling, computer vision, and interactive BI",
+    metaTag: "Data Science & AI Packages",
+    subtitle: "Pre-built Python toolkits used to clean spreadsheets, train AI models, and generate visual charts.",
     skills: [
-      { name: "Pandas", filterKey: "Pandas", icon: "devicon-pandas-plain colored", meta: "Applied in: Faalih & APSS Internships", exp: "Accomplished rapid transformation of noisy multi-source logs into clean analytical tables, as measured by 100% schema completeness, by doing Pandas DataFrame wrangling, merges, and group-by aggregations." },
-      { name: "NumPy", filterKey: "NumPy", icon: "devicon-numpy-plain colored", meta: "Applied in: Faalih & APSS Internships", exp: "Accomplished high-speed numerical array processing and matrix computations, as measured by vectorized execution across large datasets, by doing NumPy multidimensional array operations." },
-      { name: "Scikit-Learn", filterKey: "Scikit-Learn", icon: "devicon-scikitlearn-plain colored", meta: "Applied in: Disease Outbreak Predictor", exp: "Accomplished standardized feature scaling and ensemble model validation, as measured by cross-validated classification precision, by doing Scikit-Learn RandomForest pipelines and fit_transform preprocessing." },
-      { name: "XGBoost", filterKey: "XGBoost", icon: "devicon-python-plain colored", meta: "Applied in: Disease Outbreak Predictor", exp: "Accomplished high-sensitivity regional disease outbreak forecasting across imbalanced datasets, as measured by gradient-boosted ROC-AUC performance, by doing XGBoost classification tuning." },
-      { name: "SciPy", filterKey: "SciPy", icon: "devicon-python-plain colored", meta: "Applied in: APSS Data Governance", exp: "Accomplished mathematical distribution fitting and signal filtering across enterprise and sensor data, as measured by clean anomaly thresholds, by doing SciPy scientific computing." },
-      { name: "Statsmodels", filterKey: "Statsmodels", icon: "devicon-python-plain colored", meta: "Applied in: APSS & Outbreak Predictor", exp: "Accomplished rigorous hypothesis validation and epidemiological time-series inference, as measured by statistically significant p-value audits, by doing Statsmodels OLS and ARIMA regression modeling." },
-      { name: "OpenCV", filterKey: "OpenCV", icon: "devicon-opencv-plain colored", meta: "Applied in: Fall Detection System", exp: "Accomplished real-time video stream decoding and bounding-box telemetry overlays, as measured by 30fps live camera processing, by doing OpenCV (cv2) frame transformations." },
-      { name: "Ultralytics YOLOv8", filterKey: "YOLOv8", icon: "devicon-python-plain colored", meta: "Applied in: Fall Detection System", exp: "Accomplished instant human fall detection from live camera feeds, as measured by sub-second posture-collapse recognition, by doing Ultralytics YOLOv8 deep-learning vision inference." },
-      { name: "Matplotlib", filterKey: "Matplotlib", icon: "devicon-matplotlib-plain colored", meta: "Applied in: Faalih Consulting Internship", exp: "Accomplished clear exploratory distribution and trend plotting for consulting reports, as measured by rapid outlier identification, by doing custom Matplotlib figure rendering." },
-      { name: "Seaborn", filterKey: "Seaborn", icon: "devicon-python-plain colored", meta: "Applied in: Faalih & APSS Internships", exp: "Accomplished multi-variable correlation discovery for stakeholders, as measured by intuitive visual sign-offs, by doing Seaborn statistical heatmaps and pairplots." },
-      { name: "Plotly", filterKey: "Plotly", icon: "devicon-plotly-plain colored", meta: "Applied in: Data Governance Internship", exp: "Accomplished interactive, hover-enabled executive data quality charts at Artificial Penetration Software Solutions, as measured by dashboard adoption, by doing Plotly visual engineering." },
-      { name: "Bokeh", filterKey: "Bokeh", icon: "devicon-python-plain colored", meta: "Applied in: Data Governance Internship", exp: "Accomplished browser-interactive streaming data visualizations for large governance tables, as measured by responsive zoom/pan auditing, by doing Bokeh dashboard scripting." },
-      { name: "Altair", filterKey: "Altair", icon: "devicon-python-plain colored", meta: "Applied in: Data Governance Internship", exp: "Accomplished declarative statistical charting for governance reports at APSS, as measured by rapid visual prototyping, by doing Vega-Lite Altair specifications." },
-      { name: "Pygame", filterKey: "Pygame", icon: "devicon-python-plain colored", meta: "Applied in: Fall Detection System", exp: "Accomplished low-latency on-site emergency audio sirens during detected fall states, as measured by immediate local alarm triggering, by doing Pygame event-loop audio scripting." },
-      { name: "Alembic", filterKey: "Alembic", icon: "devicon-python-plain colored", meta: "Applied in: Data Governance Internship", exp: "Accomplished version-controlled relational schema evolution at Artificial Penetration Software Solutions, as measured by zero-downtime database upgrades, by doing Alembic migration scripting." }
+      { name: "Pandas", filterKey: "Pandas", icon: "devicon-pandas-plain colored", meta: "Data Table & Spreadsheet Engine", exp: "A Python toolkit that loads messy spreadsheets and database tables so they can be cleaned, filtered, and merged in seconds." },
+      { name: "NumPy", filterKey: "NumPy", icon: "devicon-numpy-plain colored", meta: "High-Speed Math & Arrays", exp: "A mathematical engine that performs fast calculations across millions of numbers and growth projections." },
+      { name: "Scikit-Learn", filterKey: "Scikit-Learn", icon: "devicon-scikitlearn-plain colored", meta: "Predictive Machine Learning", exp: "A machine learning library used to train predictive models that forecast trends and classify outcomes." },
+      { name: "XGBoost", filterKey: "XGBoost", icon: "devicon-python-plain colored", meta: "High-Accuracy Decision-Tree AI", exp: "An advanced forecasting algorithm that combines hundreds of decision trees to predict complex risks like disease outbreaks." },
+      { name: "SciPy", filterKey: "SciPy", icon: "devicon-python-plain colored", meta: "Scientific & Signal Math", exp: "A scientific computing package used to smooth noisy sensor signals and run advanced engineering math." },
+      { name: "Statsmodels", filterKey: "Statsmodels", icon: "devicon-python-plain colored", meta: "Statistical Forecasting & Audits", exp: "A statistical toolkit used to test business hypotheses, measure seasonal trends, and verify data reliability." },
+      { name: "OpenCV", filterKey: "OpenCV", icon: "devicon-opencv-plain colored", meta: "Live Camera & Video Processing", exp: "A computer vision library that lets software read live webcam video feeds and draw tracking boxes on screen." },
+      { name: "Ultralytics YOLOv8", filterKey: "YOLOv8", icon: "devicon-python-plain colored", meta: "Real-Time Object & Posture AI", exp: "A fast AI vision model that instantly recognizes people, postures, and furniture in live video streams." },
+      { name: "Matplotlib", filterKey: "Matplotlib", icon: "devicon-matplotlib-plain colored", meta: "Custom Chart & Graph Builder", exp: "A plotting library used to turn raw numbers into clear bar charts, line graphs, and pie charts for reports." },
+      { name: "Seaborn", filterKey: "Seaborn", icon: "devicon-python-plain colored", meta: "Statistical Heatmaps & Trends", exp: "A visualization library that creates clean statistical heatmaps and distribution curves to highlight market trends." },
+      { name: "Plotly", filterKey: "Plotly", icon: "devicon-plotly-plain colored", meta: "Interactive Web Charts", exp: "A charting toolkit that builds interactive, zoomable graphs where users can hover over data points for details." },
+      { name: "Bokeh", filterKey: "Bokeh", icon: "devicon-python-plain colored", meta: "Browser Data Dashboards", exp: "A visualization library designed to display large, interactive datasets smoothly inside a web browser." },
+      { name: "Altair", filterKey: "Altair", icon: "devicon-python-plain colored", meta: "Declarative Statistical Charts", exp: "A concise charting tool used to quickly build clean statistical visuals for data governance audits." },
+      { name: "Pygame", filterKey: "Pygame", icon: "devicon-python-plain colored", meta: "Audio & Alert Multimedia Engine", exp: "A multimedia library used to trigger immediate local audio alarms and voice notifications during emergency events." },
+      { name: "Alembic", filterKey: "Alembic", icon: "devicon-python-plain colored", meta: "Database Version Upgrading", exp: "A database migration tool that safely upgrades company database tables without losing existing data." }
     ]
   },
   {
-    name: "Tools & QA Suites",
-    metaTag: "Daily Instruments",
-    subtitle: "Individual environments for coding, version control, containers, and testing",
+    name: "Tools",
+    metaTag: "Developer & Prototyping Workspaces",
+    subtitle: "Everyday software workspaces and prototyping instruments used to write code, track versions, and test systems.",
     skills: [
-      { name: "VS Code", filterKey: "VS Code", icon: "devicon-vscode-plain colored", meta: "Applied in: All Projects & Internships", exp: "Accomplished fast, linted full-stack and data engineering workflows across all internships, as measured by clean modular codebases, by doing daily development in VS Code." },
-      { name: "Anaconda", filterKey: "Anaconda", icon: "devicon-anaconda-original colored", meta: "Applied in: Faalih & APSS Internships", exp: "Accomplished isolated, conflict-free Python data science environments, as measured by 100% reproducibility across machines, by doing virtual environment management in Anaconda." },
-      { name: "Jupyter Notebook", filterKey: "Jupyter", icon: "devicon-jupyter-plain colored", meta: "Applied in: Faalih & APSS Internships", exp: "Accomplished transparent, step-by-step exploratory data analysis, as measured by seamless notebook handoffs, by doing interactive code and markdown documentation in Jupyter." },
-      { name: "Google Colab", filterKey: "Google Colab", icon: "devicon-google-plain colored", meta: "Applied in: Faalih & AI Training", exp: "Accomplished cloud GPU model training and collaborative notebook sharing, as measured by rapid ML experimentation, by doing cloud execution in Google Colab." },
-      { name: "Git", filterKey: "Git", icon: "devicon-git-plain colored", meta: "Applied in: All Projects & Internships", exp: "Accomplished traceable source control and atomic commit histories across all repositories, as measured by zero lost code, by doing distributed version control with Git." },
-      { name: "Git Bash", filterKey: "Git", icon: "devicon-bash-plain", meta: "Applied in: APSS Data Governance", exp: "Accomplished fast command-line branch management, Rebasing, and shell scripting on Windows environments, by doing CLI operations in Git Bash." },
-      { name: "GitHub", filterKey: "Git", icon: "devicon-github-original", meta: "Applied in: All Projects & Internships", exp: "Accomplished collaborative code hosting, pull-request reviews, and automated static deployments, by managing repositories on GitHub." },
-      { name: "Docker", filterKey: "Docker", icon: "devicon-docker-plain colored", meta: "Applied in: Data Governance Internship", exp: "Accomplished consistent cross-environment pipeline execution at Artificial Penetration Software Solutions, as measured by portable service deployments, by doing Docker containerization." },
-      { name: "Selenium", filterKey: "Selenium", icon: "devicon-selenium-original colored", meta: "Applied in: Software Testing (STM)", exp: "Accomplished automated cross-browser functional UI regression testing, as measured by repeatable test pass rates, by doing Selenium WebDriver scripting." },
-      { name: "Apache JMeter", filterKey: "JMeter", icon: "badge", badgeText: "JMT", meta: "Applied in: Software Testing (STM)", exp: "Accomplished HTTP and database load-performance benchmarking, as measured by throughput and latency Bottleneck analysis, by doing Apache JMeter stress testing." },
-      { name: "Cisco Packet Tracer", filterKey: "CCNA", icon: "badge", badgeText: "NET", meta: "Applied in: CCNAv7 & IoT Courses", exp: "Accomplished verified multi-router LAN/WAN and smart-sensor network architectures, as measured by zero packet-loss simulations, by doing topology design in Cisco Packet Tracer." }
+      { name: "VS Code", filterKey: "VS Code", icon: "devicon-vscode-plain colored", meta: "Primary Code Editor", exp: "The main desktop code editor I use daily to write, debug, and organize software and data scripts." },
+      { name: "Anaconda", filterKey: "Anaconda", icon: "devicon-anaconda-original colored", meta: "Data Science Environment Manager", exp: "A package manager that keeps all Python data science libraries organized so projects run without software conflicts." },
+      { name: "Jupyter Notebook", filterKey: "Jupyter", icon: "devicon-jupyter-plain colored", meta: "Interactive Data Notebook", exp: "An interactive document that combines live code, charts, and plain-English notes in one shareable report." },
+      { name: "Google Colab", filterKey: "Google Colab", icon: "devicon-google-plain colored", meta: "Cloud Data Science Workspace", exp: "A cloud-based notebook workspace that runs Python data analysis and AI models directly in the browser." },
+      { name: "Git", filterKey: "Git", icon: "devicon-git-plain colored", meta: "Code Version Tracker", exp: "A version-control system that tracks every change made to a codebase so teams can collaborate and undo mistakes." },
+      { name: "Git Bash", filterKey: "Git", icon: "devicon-bash-plain", meta: "Command-Line Terminal", exp: "A terminal tool that brings Linux command-line speed and version-control commands to Windows computers." },
+      { name: "Docker", filterKey: "Docker", icon: "devicon-docker-plain colored", meta: "Software Container Packaging", exp: "A tool that packages an application and all its settings into a portable container so it runs identically on any computer." },
+      { name: "Cisco Packet Tracer", filterKey: "CCNA", icon: "badge", badgeText: "NET", meta: "Network Routing Simulator", exp: "A visual simulation tool used to design and test office computer networks, routers, and switches before buying hardware." },
+      { name: "Arduino Uno", filterKey: "Arduino Uno", icon: "devicon-arduino-plain colored", meta: "Programmable Microcontroller Board", exp: "A compact circuit board that reads signals from physical sensors—like a heartbeat clip—and sends live data to a computer." }
     ]
   },
   {
-    name: "Cloud & Platforms",
-    metaTag: "Lakehouse & Ecosystems",
-    subtitle: "Managed platforms for lakehouse governance, cloud compute, and deployments",
+    name: "Databases",
+    metaTag: "Data Storage Engines",
+    subtitle: "Structured and offline storage systems used to organize, save, and retrieve application and business data.",
     skills: [
-      { name: "Databricks", filterKey: "Databricks", icon: "badge", badgeText: "DBX", meta: "Applied in: Data Governance Internship", exp: "Accomplished collaborative lakehouse analytics and Medallion pipeline execution at Artificial Penetration Software Solutions, by doing distributed data engineering on Databricks." },
-      { name: "Unity Catalog", filterKey: "Unity Catalog", icon: "badge", badgeText: "UC", meta: "Applied in: Data Governance Internship", exp: "Accomplished centralized metadata governance, data lineage tracking, and fine-grained access control at APSS, by administering Databricks Unity Catalog." },
-      { name: "Microsoft Azure", filterKey: "Azure", icon: "devicon-azure-plain colored", meta: "Applied in: APSS & Azure Fundamentals", exp: "Accomplished scalable cloud data storage and governed compute orchestration, as measured by high-availability resource provisioning, by doing cloud configuration on Microsoft Azure." },
-      { name: "Salesforce", filterKey: "Salesforce", icon: "devicon-salesforce-plain colored", meta: "Applied in: Enterprise CRM Track", exp: "Accomplished automated CRM data validation and role-based record security, as measured by clean multi-tenant object schemas, by doing Salesforce custom object and Flow configuration." },
-      { name: "Google Drive", filterKey: "Google Drive", icon: "devicon-googlecloud-plain colored", meta: "Applied in: Cognifyz, Faalih & APSS", exp: "Accomplished governed cloud dataset storage and versioned deliverable sharing across three internships, by organizing structured repositories in Google Drive." },
-      { name: "Vercel", filterKey: "Vercel", icon: "devicon-vercel-original", meta: "Applied in: Web Deployments", exp: "Accomplished zero-downtime production web hosting with instant Git branch previews, by deploying frontend builds on Vercel." },
-      { name: "Pub.dev", filterKey: "Flutter", icon: "devicon-dart-plain colored", meta: "Applied in: Nutritional Tracker App", exp: "Accomplished modular Flutter integration for charts, permissions, and HTTP networking, by orchestrating vetted Dart packages from pub.dev." }
+      { name: "MySQL", filterKey: "MySQL", icon: "devicon-mysql-plain colored", meta: "Enterprise Relational Database", exp: "A widely used relational database that stores structured business records in linked, searchable tables." },
+      { name: "PostgreSQL", filterKey: "PostgreSQL", icon: "devicon-postgresql-plain colored", meta: "Advanced Analytical Database", exp: "A powerful open-source database built to handle complex analytical queries and large public-health datasets reliably." },
+      { name: "MongoDB", filterKey: "MongoDB", icon: "devicon-mongodb-plain colored", meta: "Flexible Document Database", exp: "A modern NoSQL database that stores unstructured logs and sensor readings as flexible JSON-style documents." },
+      { name: "SQLite", filterKey: "SQLite", icon: "devicon-sqlite-plain colored", meta: "Lightweight Local Database", exp: "A self-contained database built directly into mobile and desktop apps so user workout and meal logs work offline." },
+      { name: "SharedPreferences", filterKey: "SharedPreferences", icon: "badge", badgeText: "KV", meta: "On-Device App Storage", exp: "A fast mobile storage system that saves user profiles and daily nutrition diaries directly on a phone for instant offline access." }
     ]
   },
   {
-    name: "Databases, Hardware & APIs",
-    metaTag: "Storage & Edge Telemetry",
-    subtitle: "Relational/NoSQL engines, embedded IoT hardware, and external REST APIs",
+    name: "APIs",
+    metaTag: "Connected Data Services",
+    subtitle: "External communication bridges that let applications send phone alerts, scan food barcodes, and talk to AI models.",
     skills: [
-      { name: "MySQL", filterKey: "MySQL", icon: "devicon-mysql-plain colored", meta: "Applied in: APSS & Web Tech Lab", exp: "Accomplished high-reliability relational storage, triggers, events, and stored procedures at Artificial Penetration Software Solutions, by architecting normalized MySQL schemas." },
-      { name: "PostgreSQL", filterKey: "PostgreSQL", icon: "devicon-postgresql-plain colored", meta: "Applied in: Outbreak Predictor & DBMS", exp: "Accomplished structured epidemiological surveillance storage and indexed analytical queries, by engineering relational PostgreSQL tables." },
-      { name: "MongoDB", filterKey: "MongoDB", icon: "devicon-mongodb-plain colored", meta: "Applied in: Disease Outbreak Predictor", exp: "Accomplished flexible document ingestion for unstructured climate and health logs, by designing NoSQL collections in MongoDB." },
-      { name: "SQLite", filterKey: "SQLite", icon: "devicon-sqlite-plain colored", meta: "Applied in: Nutritional Tracker App", exp: "Accomplished 100% offline meal history availability on mobile devices, by persisting local relational tables in SQLite and SharedPreferences." },
-      { name: "Arduino Uno", filterKey: "Arduino Uno", icon: "devicon-arduino-plain colored", meta: "Applied in: Heartbeat Sensor Project", exp: "Accomplished real-time analog-to-digital biometric pulse sampling, as measured by live BPM readouts, by wiring an Arduino Uno with pulse sensors, breadboards, MM/FF/MF pins, and a digital screen." },
-      { name: "Linux", filterKey: "Linux", icon: "devicon-linux-plain", meta: "Applied in: Cisco OS & CSE OS Lab", exp: "Accomplished stable POSIX process, permission, and shell management, as measured by Cisco Operating Systems certification, by administering Linux CLI environments." },
-      { name: "Twilio API", filterKey: "Twilio API", icon: "badge", badgeText: "SMS", meta: "Applied in: Fall & Outbreak Systems", exp: "Accomplished automated real-time SMS emergency and public-health threshold dispatching, by integrating the Twilio REST API into Python pipelines." },
-      { name: "Gemini API", filterKey: "Gemini API", icon: "badge", badgeText: "LLM", meta: "Applied in: Nutritional Tracker App", exp: "Accomplished intelligent natural-language meal parsing and macro estimation inside Flutter, by integrating Google's Gemini API." },
-      { name: "USDA & Open Food APIs", filterKey: "USDA API", icon: "badge", badgeText: "API", meta: "Applied in: Nutritional Tracker App", exp: "Accomplished verified global food and barcode nutritional lookups, by querying USDA, Open Food Facts, and Barcode Scanner REST APIs." }
+      { name: "Twilio API", filterKey: "Twilio API", icon: "badge", badgeText: "SMS", meta: "Automated Phone Call & SMS Service", exp: "A communication service that lets software automatically place emergency phone calls and send text alerts." },
+      { name: "Gemini API", filterKey: "Gemini API", icon: "badge", badgeText: "AI", meta: "Google Conversational AI Service", exp: "An AI service connected to mobile apps to provide personalized meal advice and natural-language nutrition coaching." },
+      { name: "USDA FoodData API", filterKey: "USDA API", icon: "badge", badgeText: "GOV", meta: "Official Nutrition Database Connector", exp: "A government data connector that fetches verified calorie, protein, carb, and vitamin counts for thousands of foods." },
+      { name: "Open Food Facts API", filterKey: "Open Food APIs", icon: "badge", badgeText: "FOOD", meta: "Global Grocery Barcode Database", exp: "An open database connector that looks up nutrition labels for packaged supermarket products from around the world." },
+      { name: "Barcode Scanner API", filterKey: "Barcode", icon: "badge", badgeText: "SCAN", meta: "Camera Barcode Reader", exp: "A mobile camera integration that scans product barcodes to log food items in a single tap." },
+      { name: "RESTful APIs", filterKey: "REST", icon: "devicon-fastapi-plain colored", meta: "Standard Web Data Connector", exp: "The universal web standard that allows mobile apps, websites, and backend servers to exchange data securely." }
     ]
   },
   {
-    name: "BI, Frameworks & Soft Skills",
-    metaTag: "Execution & Leadership",
-    subtitle: "Executive BI suites, application frameworks, and corporate governance strengths",
+    name: "Frameworks",
+    metaTag: "App & Web Foundations",
+    subtitle: "Modern software blueprints used to build fast mobile apps, interactive websites, and backend servers.",
     skills: [
-      { name: "Power BI", filterKey: "Power BI", icon: "badge", badgeText: "PBI", meta: "Applied in: Data Governance Internship", exp: "Accomplished executive-ready KPI visibility at Artificial Penetration Software Solutions, as measured by stakeholder decision adoption, by doing interactive data modeling and dashboard design in Power BI." },
-      { name: "Flutter", filterKey: "Flutter", icon: "devicon-flutter-plain colored", meta: "Applied in: Nutritional & Outbreak Apps", exp: "Accomplished native-speed cross-platform mobile interfaces, as measured by 60fps barcode scanning and chart rendering, by building with Flutter, BLoC, and charts_flutter." },
-      { name: "React & Redux", filterKey: "React", icon: "devicon-react-original colored", meta: "Applied in: Full Stack Development", exp: "Accomplished reactive single-page web application state management, by building component architectures with React hooks, React Router, and Redux." },
-      { name: "Node.js & Express", filterKey: "Node.js", icon: "devicon-nodejs-plain colored", meta: "Applied in: Full Stack Development", exp: "Accomplished scalable RESTful backend API routing and asynchronous middleware processing, by engineering Node.js and Express.js servers." },
-      { name: "MS Excel & Google Sheets", filterKey: "MS Excel", icon: "badge", badgeText: "XLS", meta: "Applied in: Outbreak Predictor & APSS", exp: "Accomplished rapid tabular auditing and government dataset preprocessing, as measured by clean ETL staging inputs, by doing pivot analysis and formula automation in Excel and Sheets." },
-      { name: "ETL / ELT Pipelines", filterKey: "ETL/ELT", icon: "badge", badgeText: "ETL", meta: "Applied in: APSS & Outbreak Predictor", exp: "Accomplished automated multi-source data extraction, schema validation, and warehouse loading, by engineering Python and SQL ETL/ELT workflows." },
-      { name: "Prompt Engineering", filterKey: "Prompt Engineering", icon: "badge", badgeText: "AI", meta: "Applied in: APSS & Google Track", exp: "Accomplished accelerated metadata documentation and SQL query optimization at APSS, by applying structured few-shot and chain-of-thought prompt engineering." },
-      { name: "Stakeholder Communication", filterKey: "Stakeholder Communication", icon: "badge", badgeText: "SYNC", meta: "Applied in: APSS Data Governance", exp: "Accomplished continuous dashboard and pipeline alignment with business leadership at APSS, as measured by 100% stakeholder sign-off, by doing structured feedback loops and improvisations." },
-      { name: "Technical Documentation", filterKey: "Documentation", icon: "badge", badgeText: "DOC", meta: "Applied in: APSS & Technical Comm", exp: "Accomplished zero-ambiguity architectural handoffs, as measured by self-documenting schema repositories, by authoring analytical reports, presentations, and data dictionaries." }
+      { name: "Flutter", filterKey: "Flutter", icon: "devicon-flutter-plain colored", meta: "Cross-Platform Mobile App Toolkit", exp: "Google's UI toolkit used to build fast, 60-FPS mobile applications for both Android and iOS from a single codebase." },
+      { name: "React", filterKey: "React", icon: "devicon-react-original colored", meta: "Interactive Web UI Library", exp: "A popular web framework used to build fast, modular user interfaces out of reusable screen components." },
+      { name: "Redux", filterKey: "Redux", icon: "devicon-redux-original colored", meta: "Application State Manager", exp: "A data-flow manager that keeps information synchronized across every screen of a complex web application." },
+      { name: "Node.js", filterKey: "Node.js", icon: "devicon-nodejs-plain colored", meta: "JavaScript Backend Runtime", exp: "A server environment that runs JavaScript on the backend to handle user requests and database connections." },
+      { name: "Express.js", filterKey: "Express", icon: "devicon-express-original", meta: "Web Server Routing Framework", exp: "A lightweight backend framework for Node.js that organizes web routes, security middleware, and API endpoints." },
+      { name: "Tailwind CSS", filterKey: "CSS3", icon: "devicon-tailwindcss-original colored", meta: "Modern UI Design System", exp: "A utility-first styling framework used to build clean, responsive, dark-and-light-mode web interfaces rapidly." }
+    ]
+  },
+  {
+    name: "IaaS & PaaS",
+    metaTag: "Cloud Compute, Lakehouse & Hosting",
+    subtitle: "Cloud infrastructure and managed platforms used to host websites, store big data, and govern enterprise pipelines.",
+    skills: [
+      { name: "Microsoft Azure", filterKey: "Azure", icon: "devicon-azure-plain colored", meta: "Enterprise Cloud Infrastructure (IaaS)", exp: "Microsoft's cloud platform used to rent virtual servers, secure networks, and scalable enterprise data storage." },
+      { name: "Linux", filterKey: "Linux", icon: "devicon-linux-plain", meta: "Server Operating System (IaaS)", exp: "The industry-standard operating system that powers cloud servers, data pipelines, and secure development environments." },
+      { name: "Databricks", filterKey: "Databricks", icon: "badge", badgeText: "DBX", meta: "Cloud Data Lakehouse Platform (PaaS)", exp: "A unified cloud platform where data engineers process massive datasets and run collaborative analytics." },
+      { name: "Unity Catalog", filterKey: "Unity Catalog", icon: "badge", badgeText: "UC", meta: "Cloud Data Governance Engine (PaaS)", exp: "A central governance tool in Databricks that tracks data lineage and controls who can access cloud tables." },
+      { name: "Vercel", filterKey: "Vercel", icon: "devicon-vercel-original", meta: "Automated Web Hosting Platform (PaaS)", exp: "A cloud hosting platform that automatically publishes live, high-speed websites whenever code is updated." },
+      { name: "GitHub Pages & Pub.dev", filterKey: "Git", icon: "devicon-github-original", meta: "Code Hosting & Package Registry (PaaS)", exp: "Cloud platforms used to host live web portfolios, manage open-source code repositories, and pull verified app packages." }
+    ]
+  },
+  {
+    name: "Software as a Service (SaaS)",
+    metaTag: "Business, BI & Cloud Apps",
+    subtitle: "Ready-to-use cloud business applications used for customer management, executive dashboards, and team collaboration.",
+    skills: [
+      { name: "Power BI", filterKey: "Power BI", icon: "badge", badgeText: "PBI", meta: "Executive Business Intelligence App", exp: "Microsoft's analytics software used to turn company databases into interactive visual dashboards for leadership." },
+      { name: "Salesforce", filterKey: "Salesforce", icon: "devicon-salesforce-plain colored", meta: "Enterprise Customer CRM Cloud", exp: "The world's leading cloud CRM platform used to manage customer records, automate workflows, and enforce data rules." },
+      { name: "Google Drive", filterKey: "Google Drive", icon: "devicon-googlecloud-plain colored", meta: "Cloud Dataset & File Storage", exp: "Cloud storage used to securely organize, back up, and share datasets and project deliverables across teams." },
+      { name: "Google Sheets", filterKey: "Google Sheets", icon: "badge", badgeText: "SHT", meta: "Collaborative Cloud Spreadsheets", exp: "Online spreadsheets used for real-time team data tracking, quick pivot audits, and shared reporting." },
+      { name: "Google Docs & Slides", filterKey: "Documentation", icon: "badge", badgeText: "DOC", meta: "Cloud Documentation & Presentations", exp: "Collaborative cloud apps used to write technical documentation and present visual findings to stakeholders." },
+      { name: "MS Excel", filterKey: "MS Excel", icon: "badge", badgeText: "XLS", meta: "Industry Spreadsheet & Pivot Suite", exp: "The standard business spreadsheet software used to audit raw tables, run formulas, and prepare data for analysis." }
+    ]
+  },
+  {
+    name: "Soft Skills",
+    metaTag: "Workplace & Leadership Strengths",
+    subtitle: "Interpersonal and communication strengths used to align teams, explain technical insights, and deliver on time.",
+    skills: [
+      { name: "Stakeholder Communication", filterKey: "Stakeholder Communication", icon: "badge", badgeText: "SYNC", meta: "Client & Leadership Alignment", exp: "Listening to business leaders' feedback and translating their needs into clear dashboard and data improvements." },
+      { name: "Technical Documentation", filterKey: "Documentation", icon: "badge", badgeText: "DOC", meta: "Clear Process & Schema Writing", exp: "Writing easy-to-follow guides and data dictionaries so any teammate can understand how a system works." },
+      { name: "Executive Presentations", filterKey: "Stakeholder Communication", icon: "badge", badgeText: "PRES", meta: "Visual Data Storytelling", exp: "Presenting complex numbers and charts in plain English so non-technical decision-makers can act with confidence." },
+      { name: "Active Listening", filterKey: "Stakeholder Communication", icon: "badge", badgeText: "99%", meta: "Empathetic Requirement Gathering", exp: "Carefully understanding a team's real pain points before writing code so the final solution solves the right problem." },
+      { name: "Group Discussions", filterKey: "Stakeholder Communication", icon: "badge", badgeText: "TEAM", meta: "Collaborative Problem Solving", exp: "Contributing constructively in team meetings to weigh options calmly and reach clear engineering decisions." },
+      { name: "Time Management", filterKey: "Time Management", icon: "badge", badgeText: "TIME", meta: "Structured Priority & Sprint Planning", exp: "Using calendar time-blocking and priority matrices to deliver multiple projects and internships on schedule." }
     ]
   }
 ];
@@ -1241,13 +1258,11 @@ function applySkillFilter(skillName) {
   }
   activeSkillFilter = skillName;
 
-  // Highlight active pill
   document.querySelectorAll('.skill-pill-btn').forEach((btn) => {
     const isMatch = btn.getAttribute('data-filter') === skillName || btn.getAttribute('data-name') === skillName;
     btn.classList.toggle('skill-pill-active', isMatch);
   });
 
-  // Update filter banner
   const filterBar = document.getElementById('active-skill-filter-bar');
   const filterNameEl = document.getElementById('active-skill-name');
   if (filterBar && filterNameEl) {
@@ -1256,12 +1271,11 @@ function applySkillFilter(skillName) {
     filterBar.classList.add('flex');
   }
 
-  initProjectsGrid();
   initWorkFlowchart();
 
-  const projectsSection = document.getElementById('projects');
-  if (projectsSection) {
-    projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const expSection = document.getElementById('my-experiences');
+  if (expSection) {
+    expSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
@@ -1275,7 +1289,6 @@ function clearSkillFilter() {
     filterBar.classList.add('hidden');
     filterBar.classList.remove('flex');
   }
-  initProjectsGrid();
   initWorkFlowchart();
 }
 
@@ -1301,7 +1314,6 @@ function initSkillsMatrix() {
           ${miniIcon}
           <span>${skill.name}</span>
 
-          <!-- FIXED-WIDTH HOVER/TAP POPUP WITH LOGO, XYZ ACCOMPLISHMENT & FILTER CTA -->
           <div class="node-popup p-4 bg-white border border-gray-200 rounded-xl shadow-2xl text-left font-body">
             <div class="flex items-center gap-3 pb-2.5 mb-2.5 border-b border-gray-100">
               ${logoHTML}
@@ -1312,7 +1324,7 @@ function initSkillsMatrix() {
             </div>
             <p class="text-xs text-ashGray leading-relaxed mb-2.5">${skill.exp}</p>
             <div class="pt-2 border-t border-gray-100 flex items-center justify-between font-code text-[10px] text-trustBlue font-semibold">
-              <span>Click pill to filter Projects &amp; Experience &rarr;</span>
+              <span>Click pill to filter Experience &rarr;</span>
             </div>
           </div>
         </div>
@@ -1323,10 +1335,10 @@ function initSkillsMatrix() {
       <div class="space-y-1">
         <div class="flex items-center justify-between">
           <span class="font-code text-xs font-semibold text-trustBlue uppercase tracking-wider">${cat.metaTag}</span>
-          <span class="font-code text-xs text-mutedSlate">${cat.skills.length} Skills</span>
+          <span class="font-code text-xs text-mutedSlate">${cat.skills.length} Items</span>
         </div>
         <h3 class="font-heading text-lg font-bold text-charcoal">${cat.name}</h3>
-        <p class="font-body text-xs text-mutedSlate">${cat.subtitle}</p>
+        <p class="font-body text-xs text-mutedSlate leading-relaxed">${cat.subtitle}</p>
       </div>
 
       <div class="flex flex-wrap gap-2 pt-1">
@@ -1338,7 +1350,7 @@ function initSkillsMatrix() {
 
     cellEl.querySelectorAll('.skill-pill-btn').forEach((pillEl) => {
       bindDynamicPopup(pillEl);
-      pillEl.addEventListener('click', (e) => {
+      pillEl.addEventListener('click', () => {
         if (isTouchDevice() && !pillEl.classList.contains('touch-open')) return;
         const filterVal = pillEl.getAttribute('data-filter');
         applySkillFilter(filterVal);
@@ -1349,89 +1361,111 @@ function initSkillsMatrix() {
 
 
 /* ==========================================================================
-   4. EXPERIENCES & LIVE INTERACTIVE PROJECT CARDS (Preserving User Wording)
+   4. MY EXPERIENCES (CORRECTED CHRONOLOGY: 2023 GETFIT + FALL DETECTION,
+      2024 WEB DEV INTERNSHIP + DATA SCIENCE INTERNSHIP)
    ========================================================================== */
 const workFlowchartData = [
   {
     year: "2022",
-    isProjectCard: true,
     title: "Biometric Pulse Telemetry System (Heartbeat Sensor)",
-    category: "Embedded Hardware & Telemetry Project",
-    meta: "2022 · Embedded IoT Hardware",
+    category: "Cost-Optimized Embedded IoT Healthcare Hardware & Python Telemetry Project",
+    meta: "2022 • Embedded IoT Hardware",
     mediaType: "image",
     imageSrc: "assets/images/heartbeat-sensor.jpg",
-    githubUrl: "https://github.com/syedmudassir04",
-    sandboxKey: "biometric",
+    githubUrl: "https://github.com/syedmudassir04/Health-Monitoring-and-EAS/tree/main/OneDrive/Desktop/Personal/Skills%20for%20Data%20Science/Health%20Monitoring%20Project",
     tags: ["Arduino Uno", "Python", "Sensors", "IoT"],
     star: {
-      s: "Continuous physiological heart-rate monitoring required capturing low-voltage analog pulse signals and displaying real-time BPM without expensive clinical hardware.",
-      t: "Design and prototype an end-to-end embedded telemetry circuit capable of sampling, filtering, and visualizing live heartbeats.",
-      a: "Interfaced a PPG pulse sensor with an Arduino Uno on a solderless breadboard using MM/FF/MF jumper pins, drove a digital screen module, and ingested serial streams into Python.",
-      r: "Delivered a responsive, real-time biometric monitor producing clean digital BPM readouts and logged Python telemetry streams."
+      s: "Reliable clinical heart-rate monitors in the Indian market cost ₹30,000 to ₹1,50,000+, while budget ₹8,000 alternatives suffer from severe signal drift and poor reliability.",
+      t: "Design and prototype an accurate, IoT-based embedded pulse telemetry circuit capable of capturing, conditioning, and logging live heartbeats for under ₹2,000.",
+      a: "Interfaced an optical PPG ear-clip sensor and op-amp conditioning board with an Arduino Uno on a breadboard using MM/FF/MF jumpers, wired a 16x2 LCD screen, and streamed live analog data into a single Python telemetry script.",
+      r: "Cut hardware costs by 93.3%—dropping a ₹30,000 market price tag to ₹2,000—delivering a real-time biometric monitor with live LCD readouts and automated Python CSV telemetry logging."
     },
     stackUsed: [
-      { item: "Arduino Uno", purpose: "Sampled analog PPG voltage signals at millisecond intervals and computed real-time inter-beat intervals." },
-      { item: "Pulse Sensor & Breadboard", purpose: "Captured non-invasive optical blood-volume pulse waveforms on a modular breadboard circuit." },
-      { item: "MM, FF & MF Jumper Pins", purpose: "Routed power, ground, and analog/digital signal lines across sensor, microcontroller, and display rails." },
-      { item: "Digital Screen Module", purpose: "Rendered instantaneous heart-rate (BPM) and threshold status directly on the hardware unit." },
-      { item: "Python", purpose: "Ingested serial port telemetry streams for host-side signal smoothing and historical BPM logging." }
-    ]
-  },
-  {
-    year: "2022",
-    isProjectCard: true,
-    title: "Progressive Workout & Volume Analytics Application",
-    category: "Fitness State & Analytics Engineering",
-    meta: "2022 · Application Engineering",
-    mediaType: "code",
-    appLogoText: "WT // APP",
-    codeSnippet: `const logWorkout = (set) => ({\n  exercise: set.name,\n  volume: set.reps * set.weight,\n  progressed: set.volume > prevMax\n});`,
-    githubUrl: "https://github.com/syedmudassir04",
-    tags: ["JavaScript", "HTML5", "CSS3", "VS Code", "Git"],
-    star: {
-      s: "Manual workout notes made it difficult to track cumulative training volume (reps × weight) and verify progressive overload across weeks.",
-      t: "Build a fast, distraction-free application that logs sets and automatically computes session-over-session volume progression.",
-      a: "Engineered a responsive HTML5/CSS3 interface backed by modular ES6+ JavaScript state logic and local storage persistence.",
-      r: "Eliminated manual volume math and provided instant visual feedback on personal records and strength progression."
-    },
-    stackUsed: [
-      { item: "JavaScript (ES6+)", purpose: "Computed real-time exercise volume (reps × weight) and flagged progressive-overload personal records." },
-      { item: "HTML5 & CSS3", purpose: "Structured a mobile-responsive, high-contrast workout logging interface for rapid between-set entry." },
-      { item: "Local State Persistence", purpose: "Stored historical workout sessions locally to chart multi-week strength trends." }
+      { item: "Arduino Uno", purpose: "Sampled analog PPG voltage waveforms on Pin A0 via USB Firmata/Serial interface and drove real-time hardware status outputs." },
+      { item: "Pulse Sensor, Op-Amp & Breadboard", purpose: "Captured non-invasive optical blood-volume pulse waveforms via a 3.5mm infrared ear-clip sensor and analog op-amp conditioning PCB wired to a solderless breadboard." },
+      { item: "MM, FF & MF Jumper Pins", purpose: "Routed 5V power distribution, common ground rails, and analog/digital signal lines across the sensor conditioning module, microcontroller, and display rails." },
+      { item: "Digital Screen Module (16x2 LCD)", purpose: "Rendered instantaneous heart-rate (BPM) and physiological threshold status (NORMAL, LOW, HIGH) directly on the hardware unit." },
+      { item: "Python", purpose: "Executed a single-script telemetry pipeline (heartbeat_monitor.py) using pyfirmata and pyserial for real-time beat detection, rolling BPM calculation, and CSV data logging." }
     ]
   },
   {
     year: "2023",
-    isProjectCard: true,
-    title: "YOLOv8 Vision Fall Detection & Emergency Alert System",
-    category: "Computer Vision & Automated Safety Pipeline",
-    meta: "2023 · Computer Vision & Alert Automation",
+    title: "GetFit — AI Athletic Workout Tracker & Muscle Activation Engine",
+    category: "Open-Source LLM Training Recommender, Exercise Dataset Pipeline & Biomechanical Volume Tracker",
+    meta: "2023 • AI Fitness & Athletic Analytics",
+    mediaType: "code",
+    appLogoText: "GETFIT // AI",
+    codeSnippet: `prompt = build_athletic_prompt(goal, modality)\nplan = mistral_llm.generate(prompt)\nstimulus = compute_muscle_activation(completed_sets)`,
+    githubUrl: "https://github.com/syedmudassir04/getfit-workout-tracker",
+    tags: ["Python", "Pandas", "NumPy", "Prompt Engineering", "SQLite", "SQL", "Plotly", "Matplotlib", "HTML5", "CSS3", "JavaScript"],
+    star: {
+      s: "Standard fitness trackers either locked athletic routines behind paywalls or bundled cluttered nutrition trackers, lacking a focused system to map cardio, stretching, and strength exercises directly to daily muscle-group development.",
+      t: "Build a streamlined athletic training and workout-tracking application capable of generating goal-specific exercise plans via an open-source LLM, tracking daily plan completion, and quantifying muscle activation.",
+      a: "Wrangled an open-source exercise dataset using Python and Pandas, engineered prompt templates for an open-source LLM recommender, persisted workout adherence in SQLite, and built an interactive HTML5/CSS3/Plotly interface.",
+      r: "Delivered an end-to-end athletic training platform featuring automated workout plan generation, real-time plan-completion tracking, and dynamic anatomical muscle-development visualizations across 12+ muscle groups."
+    },
+    stackUsed: [
+      { item: "Python, Pandas & NumPy", purpose: "Cleaned, normalized, and filtered an open-source exercise dataset across Cardio, Muscle Training, and Stretching modalities for weight-loss and athletic conditioning goals." },
+      { item: "Prompt Engineering & Open-Source LLM", purpose: "Designed structured zero-shot prompt templates for an open-source LLM (Mistral-7B-Instruct) to recommend customized daily athletic training plans with zero nutrition/diet clutter." },
+      { item: "SQLite & SQL (DDL / DML / DQL)", purpose: "Persisted daily aimed workout plans, completed set/rep logs, and plan-adherence states in a local relational database." },
+      { item: "Plotly & Matplotlib", purpose: "Computed weighted primary and secondary biomechanical stimulus scores to render live visual breakdowns of which muscle groups were developed each day." },
+      { item: "HTML5, CSS3 & JavaScript", purpose: "Built the interactive workout logging dashboard allowing athletes to generate goal-based plans, check off completed exercises, and track real-time adherence percentages." }
+    ]
+  },
+  {
+    year: "2023",
+    title: "Real-Time Automatic Fall Detection & Emergency Dispatch System",
+    category: "YOLOv8 Vision Pipeline, Furniture False-Alarm Filtering & Automated Twilio Emergency Dispatch",
+    meta: "2023 • Computer Vision & Edge AI Telemetry",
     mediaType: "image",
     imageSrc: "assets/images/fall-detection.jpg",
-    githubUrl: "https://github.com/syedmudassir04",
+    githubUrl: "https://github.com/syedmudassir04/automatic-fall-detection-yolov8",
     tags: ["Python", "YOLOv8", "OpenCV", "Twilio API", "Pygame"],
     star: {
-      s: "Unattended falls among elderly or vulnerable individuals require immediate detection and caregiver notification without relying on wearable buttons.",
-      t: "Engineer a contactless, real-time computer vision safety pipeline that detects falls from live video feeds and dispatches instant alerts.",
-      a: "Combined OpenCV video stream decoding with Ultralytics YOLOv8 human bounding-box posture tracking, triggered local Pygame audio alarms, and integrated the Twilio API for automated SMS dispatch.",
-      r: "Achieved sub-second fall anomaly recognition and automated SMS caregiver notifications alongside immediate on-site alarm feedback."
+      s: "Elderly individuals living alone and high-risk patients in assisted-living facilities face severe risks from unmonitored falls, while wearable sensors suffer from poor compliance and high hardware costs.",
+      t: "Engineer a non-intrusive, real-time computer vision system using standard webcam hardware capable of detecting human falls, filtering out false alarms on furniture, and automatically dispatching emergency calls.",
+      a: "Built a real-time video pipeline (stream.py) using OpenCV and Ultralytics YOLOv8 to evaluate human bounding-box aspect ratios (height < width) against furniture overlap (sofa, bed, chair), integrated a 3-second recovery timer with Pygame audio alerts, and automated voice calls via the Twilio API.",
+      r: "Delivered an end-to-end automated fall monitoring system achieving real-time detection, zero false alarms during sofa/bed rest, automatic alert cancellation upon recovery, and instant Twilio emergency voice dispatch after a 3-second threshold."
     },
     stackUsed: [
-      { item: "Python", purpose: "Orchestrated the real-time video capture, deep-learning inference, local alarm, and cloud SMS alert pipeline." },
-      { item: "Ultralytics YOLOv8", purpose: "Performed real-time human detection and bounding-box aspect-ratio analysis to classify sudden posture collapses." },
-      { item: "OpenCV (cv2)", purpose: "Decoded live camera frames, normalized resolutions, and rendered real-time telemetry bounding boxes." },
-      { item: "Twilio API", purpose: "Dispatched automated emergency SMS alerts with incident timestamps to designated contacts upon fall confirmation." },
-      { item: "Pygame", purpose: "Triggered low-latency local audible sirens and visual alert states during emergency events." }
+      { item: "Ultralytics YOLOv8", purpose: "Tracked real-time human bounding-box coordinates to identify horizontal fall postures (height < width) while detecting sofa, chair, and bed classes to prevent false alarms when resting on furniture." },
+      { item: "OpenCV", purpose: "Ingested live webcam video feeds at real-time frame rates, rendering dynamic green/red posture bounding boxes and on-screen countdown telemetry overlays." },
+      { item: "Twilio API", purpose: "Automated outbound emergency phone calls with custom TwiML speech synthesis to alert predefined emergency contacts when a fallen individual remained down beyond the 3-second threshold." },
+      { item: "Pygame", purpose: "Drove the local audio notification mixer to play an immediate reassurance message informing the fallen individual that emergency contacts had been notified." },
+      { item: "Python", purpose: "Orchestrated the 4-module architecture (stream.py) handling webcam capture, aspect-ratio posture analysis, 3-second auto-cancellation timers, and REST API dispatch." }
     ]
   },
   {
-    year: "2023",
-    isProjectCard: false,
+    year: "2024",
+    title: "Data Science Internship — Faalih Consulting Services",
+    category: "Multi-Industry Market & Retail Exploratory Data Analysis (5-Sector Suite)",
+    meta: "2024 • Faalih Consulting Services",
+    mediaType: "image",
+    imageSrc: "assets/images/data-science-internship.jpg",
+    githubUrl: "https://github.com/syedmudassir04/multi-sector-market-eda",
+    tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Google Colab", "Google Drive", "Jupyter", "Anaconda", "VS Code"],
+    star: {
+      s: "Strategic inventory planning, retail pricing, and market positioning across diverse consumer and commodity sectors at Faalih Consulting Services required extracting actionable insights from raw, multi-domain datasets covering grocery operations, global apparel, jewelry, poultry, and livestock markets.",
+      t: "Conduct end-to-end Exploratory Data Analysis (EDA) across 5 distinct industry datasets (Grocery Store, Formal Clothing, Imitation Jewelry, Poultry, and Cattle markets) to uncover purchasing behaviors, revenue distributions, CAGR trajectories, and seasonal price fluctuations.",
+      a: "Engineered cloud-based data processing pipelines in Google Colab integrated with Google Drive using Python, Pandas, and NumPy, and rendered multi-variable statistical visualizations (bar charts, line graphs, pie charts, and distribution plots) via Matplotlib and Seaborn.",
+      r: "Delivered 5 comprehensive sector intelligence reports—benchmarking $356.85B jewelry market projections (5.28% CAGR), global apparel revenue shares (Inditex 23.2%, Fast Retailing 15.8%), supermarket poultry price spreads (£2.30–£14.59/kg), grocery store inventory KPIs, and 2024 cattle market volatility."
+    },
+    stackUsed: [
+      { item: "Python & Pandas", purpose: "Wrangled and aggregated 5 multi-industry datasets covering grocery store transactions/inventory (2020–2022), global formal apparel revenue shares (Inditex 23.2%, Fast Retailing 15.8%, H&M 15.5%, Gap 12.7%), jewelry, poultry, and cattle markets." },
+      { item: "NumPy", purpose: "Executed numerical operations, CAGR projections (5.28% growth from US$255B in 2021 to US$356.85B in 2029 for global jewelry), and multi-year inventory variance calculations." },
+      { item: "Matplotlib", purpose: "Built comparative multi-period bar charts, retail market-share pie charts, and UK supermarket poultry price-spread visuals (£2.30/kg medium whole chicken to £14.59/kg free-range breast fillets)." },
+      { item: "Seaborn", purpose: "Rendered statistical distribution plots and Jan 2024 – Oct 2024 cattle market time-series volatility curves (165–195 price index range) to inform supply-chain pricing strategies." },
+      { item: "Google Colab, Jupyter, Anaconda, VS Code & Google Drive", purpose: "Executed cloud-based and local Jupyter notebook workflows with direct Google Drive dataset storage for reproducible EDA and visual reporting." }
+    ]
+  },
+  {
+    year: "2024",
     title: "Web Development Internship — Cognifyz Technologies Pvt Ltd",
     category: "Industry Internship · Full-Stack Web Engineering",
-    meta: "2023 · Cognifyz Technologies Pvt Ltd",
+    meta: "2024 • Cognifyz Technologies Pvt Ltd",
     mediaType: "image",
     imageSrc: "assets/images/web-dev-internship.jpg",
+    githubUrl: "https://github.com/syedmudassir04",
     tags: ["HTML5", "CSS3", "JavaScript", "PHP", "Google Drive", "VS Code"],
     star: {
       s: "Client-facing web modules at Cognifyz Technologies required responsive multi-device layouts, interactive form validation, and dynamic backend processing.",
@@ -1447,66 +1481,38 @@ const workFlowchartData = [
     ]
   },
   {
-    year: "2024",
-    isProjectCard: false,
-    title: "Data Science Internship — Faalih Consulting Services",
-    category: "Industry Internship · Statistical Modeling & EDA",
-    meta: "2024 · Faalih Consulting Services",
-    mediaType: "image",
-    imageSrc: "assets/images/data-science-internship.jpg",
-    tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Jupyter", "Google Colab", "Anaconda", "VS Code", "Google Drive"],
-    star: {
-      s: "Raw consulting datasets at Faalih Consulting Services contained missing records, unscaled variables, and hidden statistical patterns that needed executive clarity.",
-      t: "Perform end-to-end exploratory data analysis (EDA), statistical hypothesis validation, and visual storytelling to guide consulting decisions.",
-      a: "Cleaned and wrangled datasets using Python, Pandas, and NumPy in Jupyter/Colab and Anaconda, ran inferential statistical audits, and designed Matplotlib/Seaborn visual reports stored in Google Drive.",
-      r: "Transformed noisy raw logs into 100% validated analytical datasets and delivered visual insights that directly supported consulting recommendations."
-    },
-    stackUsed: [
-      { item: "Python, Pandas & NumPy", purpose: "Cleaned raw multi-source datasets, imputed missing values, and engineered analytical features." },
-      { item: "Statistics", purpose: "Applied descriptive and inferential statistical tests to validate hypotheses and detect outliers." },
-      { item: "Matplotlib & Seaborn", purpose: "Created correlation heatmaps, distribution plots, and visual summaries for stakeholder reports." },
-      { item: "Jupyter Notebook, Google Colab & Anaconda", purpose: "Maintained reproducible Python environments and collaborative analytical notebooks." },
-      { item: "VS Code & Google Drive Data Storage", purpose: "Authored modular data-processing scripts and managed governed cloud dataset storage." }
-    ]
-  },
-  {
     year: "2025",
-    isProjectCard: true,
-    title: "Cross-Platform Nutritional & Macro Intelligence Tracker",
-    category: "Mobile Health Data Engineering & Multi-API Architecture",
-    meta: "2025 · Flutter, SQLite & Multi-API Pipeline",
+    title: "Trackify — AI Nutrition, Barcode & TDEE Macro Telemetry App",
+    category: "Flutter & Dart Mobile Application with Mifflin-St Jeor TDEE Engine, Barcode Food API & Gemini AI Coach",
+    meta: "2025 • Cross-Platform Mobile & AI HealthTech",
     mediaType: "image",
     imageSrc: "assets/images/nutritional-tracker.jpg",
-    githubUrl: "https://github.com/syedmudassir04",
-    tags: ["Flutter", "Dart", "SQLite", "Gemini API", "USDA API", "Git"],
+    githubUrl: "https://github.com/syedmudassir04/trackify-nutrition-tracker",
+    tags: ["Flutter", "Dart", "USDA API", "Open Food APIs", "Barcode", "Gemini API", "SharedPreferences", "SQLite"],
     star: {
-      s: "Logging daily calories, macronutrients, and micronutrients across packaged and whole foods is tedious when apps lack instant barcode scanning or offline persistence.",
-      t: "Architect a cross-platform mobile application combining camera barcode scanning, verified global food APIs, local SQLite storage, and intelligent meal breakdown.",
-      a: "Built the app in Flutter and Dart using Stateful Widgets/BLoC, integrated Barcode Scanner, Open Food Facts, USDA, and Gemini APIs, persisted logs in SQLite/SharedPreferences, and rendered trends with charts_flutter.",
-      r: "Delivered a 60fps cross-platform nutrition tracker with one-tap barcode lookup, 100% offline history access, and automated macro analytics."
+      s: "Commercial diet-tracking apps lock barcode scanning and macro analytics behind paywalls while relying on cloud-heavy architectures that introduce UI latency and privacy concerns.",
+      t: "Architect a privacy-first, cross-platform mobile nutrition and activity tracker (Trackify) capable of computing scientific BMR/TDEE targets, scanning packaged food barcodes, and providing AI dietary coaching at 60 FPS.",
+      a: "Developed a modular Flutter and Dart application (nutrition_tracker_app) integrating the Mifflin-St Jeor BMR/TDEE equation, MET-based activity burn formulas, barcode_scan2 with USDA and Open Food Facts APIs, a Gemini AI nutrition chatbot (nutrient_chat_dialog.dart), and offline-first SharedPreferences persistence.",
+      r: "Delivered a cross-platform Android/iOS application achieving a 1.2s cold launch, sustained 60 FPS rendering, <=30ms state-sync latency, automated 40/30/30 macro partitioning, and real-time Gemini AI meal evaluations."
     },
     stackUsed: [
-      { item: "Flutter, Dart & Flutter Engine", purpose: "Engineered a native-speed cross-platform mobile interface from a single reactive codebase." },
-      { item: "Stateful Widget / BLoC Pattern", purpose: "Managed predictable state transitions across meal logs, macro targets, and asynchronous API calls." },
-      { item: "USDA API & Open Food Facts API", purpose: "Fetched verified macro and micronutrient profiles across global packaged and whole foods via http." },
-      { item: "Barcode Scanner API & permission_handler", purpose: "Enabled instant camera barcode food lookups with secure runtime device permission control." },
-      { item: "SQLite & SharedPreferences", purpose: "Persisted offline meal logs, user targets, and dietary history locally on the device." },
-      { item: "Gemini API", purpose: "Provided natural-language meal parsing and nutritional estimation for custom unlabelled dishes." },
-      { item: "charts_flutter, intl & pub.dev", purpose: "Rendered interactive calorie/macro progression charts and localized date/unit formatting." }
+      { item: "Flutter", purpose: "Engineered a responsive, dark/light-mode cross-platform UI across 15+ onboarding and main application screens (home_screen.dart, diary_screen.dart, profile_screen.dart), profiled via Flutter DevTools to sustain 60 FPS and <=30ms state updates." },
+      { item: "Dart", purpose: "Implemented the Mifflin-St Jeor BMR/TDEE mathematical engine (tdee_calculator.dart), 40/30/30 macronutrient gram conversion logic, and standardized MET exercise calorie expenditure formulas." },
+      { item: "USDA & Open Food APIs", purpose: "Integrated external nutritional databases with camera barcode scanning (barcode_scan2) and dynamic portion scaling (g/ml) for instant packaged and whole-food macro lookups." },
+      { item: "Gemini API", purpose: "Built an in-app AI dietary advisor (nutrient_chat_dialog.dart) that ingests user body stats, remaining TDEE calories, and daily macro deficits to generate real-time meal recommendations." },
+      { item: "Pub.dev & SharedPreferences", purpose: "Orchestrated Flutter ecosystem packages (shared_preferences, charts_flutter, intl, barcode_scan2, permission_handler) to power offline-first JSON diary persistence (diary_YYYY-MM-DD) and interactive macro visualizations." }
     ]
   },
   {
     year: "2025",
-    isProjectCard: true,
     title: "Epidemiological Disease Outbreak Predictor",
     category: "Ensemble Machine Learning & Public Health Forecasting",
-    meta: "2025 · XGBoost, RandomForest & Dual-DB ETL",
+    meta: "2025 • XGBoost, RandomForest & Dual-DB ETL",
     mediaType: "code",
     appLogoText: "EPI // ML",
     codeSnippet: `model = XGBClassifier()\nX_scaled = scaler.fit_transform(X_govt_data)\nmodel.fit(X_scaled, y_outbreak)\nrisk = model.predict_proba(region)[:, 1]`,
     githubUrl: "https://github.com/syedmudassir04",
-    sandboxKey: "outbreak",
-    tags: ["Python", "Scikit-Learn", "XGBoost", "Statsmodels", "PostgreSQL", "MongoDB", "ETL/ELT", "Twilio API", "Flutter", "MS Excel", "JavaScript"],
+    tags: ["Python", "Scikit-Learn", "XGBoost", "Statsmodels", "PostgreSQL", "MongoDB", "Twilio API", "Flutter", "MS Excel", "JavaScript"],
     star: {
       s: "Public health responses often lag behind emerging disease clusters because historical government surveillance records and real-time climate telemetry remain siloed.",
       t: "Build an end-to-end epidemiological forecasting pipeline that fuses government datasets, temperature sensor inputs, and ensemble machine learning to predict outbreak risk.",
@@ -1524,15 +1530,13 @@ const workFlowchartData = [
   },
   {
     year: "2026",
-    isProjectCard: true,
     title: "Data Governance Internship — Artificial Penetration Software Solutions Pvt Ltd",
     category: "Industry Internship · Enterprise Data Governance & Lakehouse",
-    meta: "2026 · Artificial Penetration Software Solutions Pvt Ltd",
+    meta: "2026 • Artificial Penetration Software Solutions Pvt Ltd",
     mediaType: "image",
     imageSrc: "assets/images/data-governance-internship.jpg",
     githubUrl: "https://github.com/syedmudassir04",
-    sandboxKey: "governance",
-    tags: ["Databricks", "Unity Catalog", "Azure", "SQL", "MySQL", "Alembic", "ETL/ELT", "Power BI", "Plotly", "Bokeh", "Altair", "Matplotlib", "Seaborn", "Python", "Pandas", "NumPy", "SciPy", "Statsmodels", "Docker", "Git", "Prompt Engineering", "Stakeholder Communication", "Documentation", "JavaScript"],
+    tags: ["Databricks", "Unity Catalog", "Azure", "SQL", "MySQL", "Alembic", "Power BI", "Plotly", "Bokeh", "Altair", "Matplotlib", "Seaborn", "Python", "Pandas", "NumPy", "SciPy", "Statsmodels", "Docker", "Git", "Prompt Engineering", "Stakeholder Communication", "Documentation", "JavaScript", "Google Sheets"],
     star: {
       s: "Enterprise data ecosystems at Artificial Penetration Software Solutions required strict schema governance, unified catalog lineage, automated ETL/ELT validation, and executive BI visibility.",
       t: "Architect governed relational and lakehouse schemas, automate migrations and quality pipelines, and deliver interactive dashboards aligned with stakeholder feedback.",
@@ -1553,10 +1557,9 @@ const workFlowchartData = [
   },
   {
     year: "2026+",
-    isProjectCard: false,
     title: "Are You Next ?",
     category: "Future High-Impact Collaboration",
-    meta: "2026 - Present · Ready to Deploy",
+    meta: "2026 - Present • Ready to Deploy",
     mediaType: "none",
     tags: ["Python", "SQL", "Databricks", "Power BI", "Azure"],
     star: {
@@ -1611,89 +1614,6 @@ function buildMediaPreviewHTML(item) {
   return '';
 }
 
-// Render Live Interactive Project Cards Grid (Image 5 & Image 6 #2)
-function initProjectsGrid() {
-  const container = document.getElementById('projects-cards-grid');
-  if (!container) return;
-  container.innerHTML = '';
-
-  const projectItems = workFlowchartData.filter(item => item.isProjectCard && itemMatchesSkillFilter(item));
-
-  if (projectItems.length === 0) {
-    container.innerHTML = `
-      <div class="col-span-full p-8 border border-gray-200 rounded-2xl text-center space-y-3">
-        <p class="font-heading text-lg font-bold text-charcoal">No project cards match "${activeSkillFilter}" directly — check the Experience timeline below or reset the filter.</p>
-        <button onclick="clearSkillFilter()" class="font-code text-xs bg-trustBlue text-white px-4 py-2 rounded-lg cursor-pointer">Show All Projects</button>
-      </div>
-    `;
-    return;
-  }
-
-  projectItems.forEach((item) => {
-    const mediaHTML = buildMediaPreviewHTML(item);
-    const tagsHTML = (item.tags || []).slice(0, 6).map(tag => `
-      <span onclick="event.stopPropagation(); applySkillFilter('${tag}')"
-            class="font-code text-[10px] bg-gray-100 hover:bg-blue-50 text-charcoal hover:text-trustBlue px-2 py-0.5 rounded cursor-pointer transition-colors">
-        ${tag}
-      </span>
-    `).join('');
-
-    const sandboxBtnHTML = item.sandboxKey ? `
-      <button onclick="event.stopPropagation(); renderSandboxChart('${item.sandboxKey}'); document.getElementById('plotly-sandbox-chart').scrollIntoView({behavior:'smooth', block:'center'});"
-              class="font-code text-xs text-trustBlue hover:underline font-medium cursor-pointer">
-        Live Chart Demo &darr;
-      </button>
-    ` : '';
-
-    const cardEl = document.createElement('div');
-    cardEl.className = 'p-5 rounded-2xl border border-gray-200 bg-white hover:border-trustBlue transition-all shadow-2xs hover:shadow-lg flex flex-col justify-between space-y-4 cursor-pointer';
-    cardEl.addEventListener('click', () => openExperienceModal(item));
-
-    cardEl.innerHTML = `
-      <div class="space-y-3">
-        ${mediaHTML}
-        <div class="flex items-center justify-between gap-2">
-          <span class="font-code text-[10px] font-medium text-trustBlue bg-blue-50 px-2 py-0.5 rounded">${item.meta}</span>
-          <span class="font-code text-[10px] text-mutedSlate">Click for Architecture &nearr;</span>
-        </div>
-        <h3 class="font-heading text-lg font-bold text-charcoal leading-snug">${item.title}</h3>
-        <div class="space-y-1 font-body text-xs text-ashGray leading-relaxed">
-          <p><strong class="text-charcoal font-semibold">Problem:</strong> ${item.star.s}</p>
-          <p><strong class="text-charcoal font-semibold">Architecture:</strong> ${item.star.a}</p>
-          <p><strong class="text-trustBlue font-semibold">Impact:</strong> ${item.star.r}</p>
-        </div>
-      </div>
-
-      <div class="space-y-3 pt-3 border-t border-gray-100">
-        <div class="flex flex-wrap gap-1.5">
-          ${tagsHTML}
-        </div>
-        <div class="flex items-center justify-between pt-1">
-          <button onclick="event.stopPropagation(); openExperienceModal_ByTitle('${item.title.replace(/'/g, "\\'")}')"
-                  class="font-code text-xs font-semibold text-charcoal hover:text-trustBlue transition-colors cursor-pointer">
-            Inspect Full Stack &rarr;
-          </button>
-          <div class="flex items-center gap-3">
-            ${sandboxBtnHTML}
-            <a href="${item.githubUrl || 'https://github.com/syedmudassir04'}" target="_blank" rel="noopener" onclick="event.stopPropagation()"
-               class="font-code text-xs text-mutedSlate hover:text-charcoal flex items-center gap-1">
-              <i class="devicon-github-original"></i>
-              <span>Code &nearr;</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-
-    container.appendChild(cardEl);
-  });
-}
-
-function openExperienceModal_ByTitle(titleStr) {
-  const found = workFlowchartData.find(x => x.title === titleStr);
-  if (found) openExperienceModal(found);
-}
-
 function openExperienceModal(item) {
   const starBannerHTML = `
     <div class="pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50/70 p-4 rounded-xl border border-gray-200/80">
@@ -1711,7 +1631,7 @@ function openExperienceModal(item) {
       </div>
       <div class="space-y-1">
         <span class="font-code text-[10px] text-trustBlue uppercase tracking-wider">Result</span>
-        <p class="font-body text-xs text-charcoal font-medium leading-relaxed">${item.star.r}</p>
+        <p class="font-body text-xs text-charcoal font-bold leading-relaxed">${item.star.r}</p>
       </div>
     </div>
   `;
@@ -1734,7 +1654,8 @@ function openExperienceModal(item) {
     subtitle: item.category,
     bodyHTML: `${starBannerHTML}<div class="pt-4 divide-y divide-gray-100">${stackRowsHTML}</div>`,
     footerText: `STAR Execution Summary + ${(item.stackUsed || []).length} Technologies Mapped`,
-    externalUrl: item.githubUrl || null
+    externalUrl: item.githubUrl || null,
+    externalLabel: 'GitHub Repository'
   });
 }
 
@@ -1754,22 +1675,20 @@ function initWorkFlowchart() {
     const nodeBoxHTML = `
       <div class="node-group relative w-full md:w-[42%] cursor-pointer group hover:z-50 ${isLeft ? 'md:text-right' : 'md:text-left'}">
         
-        <!-- FIXED-WIDTH STAR HOVER POPUP CARD -->
         <div class="node-popup p-4 bg-white border border-gray-200 rounded-xl shadow-2xl text-left">
           ${mediaHTML}
           <div class="flex items-center justify-between gap-2 mb-1.5">
             <span class="font-code text-[10px] font-medium text-trustBlue bg-blue-50 px-2 py-0.5 rounded">${item.meta}</span>
-            <span class="font-code text-[10px] text-trustBlue font-medium">Click for Full STAR &nearr;</span>
+            <span class="font-code text-[10px] text-trustBlue font-medium">Click for Full Stack &nearr;</span>
           </div>
           <h4 class="font-heading text-sm font-bold text-charcoal mb-1.5">${item.title}</h4>
           <div class="space-y-1 font-body text-[11px] text-ashGray leading-relaxed">
             <p><strong class="text-charcoal font-semibold">S/T:</strong> ${item.star.s}</p>
             <p><strong class="text-charcoal font-semibold">Action:</strong> ${item.star.a}</p>
-            <p><strong class="text-trustBlue font-semibold">Result:</strong> ${item.star.r}</p>
+            <p><strong class="text-trustBlue font-semibold">Result:</strong> <strong class="text-charcoal font-bold">${item.star.r}</strong></p>
           </div>
         </div>
 
-        <!-- AESTHETIC BLENDED ITEM -->
         <div class="py-1.5 transition-transform duration-200 ${isLeft ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'}">
           <span class="font-code text-xs ${item.isNextCTA ? 'text-trustBlue font-semibold' : 'text-mutedSlate'} block">
             ${item.category}
@@ -1811,105 +1730,7 @@ function initWorkFlowchart() {
 
 
 /* ==========================================================================
-   5. INTERACTIVE PLOTLY.JS SANDBOX (Image 6 Recommendation #5)
-   ========================================================================== */
-let currentSandboxTab = 'outbreak';
-
-function renderSandboxChart(tabKey) {
-  currentSandboxTab = tabKey;
-  const chartContainer = document.getElementById('plotly-sandbox-chart');
-  if (!chartContainer || typeof Plotly === 'undefined') return;
-
-  // Update active button state
-  ['outbreak', 'governance', 'biometric'].forEach((k) => {
-    const btn = document.getElementById(`sandbox-btn-${k}`);
-    if (!btn) return;
-    if (k === tabKey) {
-      btn.className = 'sandbox-tab font-code text-xs px-3 py-1.5 rounded-lg bg-trustBlue text-white font-medium transition-colors cursor-pointer';
-    } else {
-      btn.className = 'sandbox-tab font-code text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-charcoal hover:border-trustBlue transition-colors cursor-pointer';
-    }
-  });
-
-  const isDark = document.documentElement.classList.contains('dark');
-  const textColor = isDark ? '#F8FAFC' : '#0F172A';
-  const gridColor = isDark ? '#1E293B' : '#F1F5F9';
-  const paperBg = isDark ? '#1E293B' : '#FFFFFF';
-
-  let traces = [];
-  let layoutTitle = '';
-
-  if (tabKey === 'outbreak') {
-    layoutTitle = 'Epidemiological Outbreak Predictor — XGBoost Probability vs. Ambient Temp Telemetry';
-    traces = [
-      {
-        x: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5', 'Wk 6', 'Wk 7', 'Wk 8'],
-        y: [0.14, 0.19, 0.28, 0.46, 0.72, 0.84, 0.61, 0.33],
-        name: 'XGBoost Outbreak Risk Score',
-        type: 'scatter',
-        mode: 'lines+markers',
-        line: { color: '#2563EB', width: 3 },
-        marker: { size: 8 }
-      },
-      {
-        x: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5', 'Wk 6', 'Wk 7', 'Wk 8'],
-        y: [0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70],
-        name: 'Twilio SMS Alert Threshold (0.70)',
-        type: 'scatter',
-        mode: 'lines',
-        line: { color: '#EF4444', width: 2, dash: 'dash' }
-      }
-    ];
-  } else if (tabKey === 'governance') {
-    layoutTitle = 'Enterprise Data Governance — Schema Completeness & Validation Pass Rate (%)';
-    traces = [
-      {
-        x: ['Raw Bronze Ingestion', 'Alembic DDL Schema', 'Silver Cleaned ETL', 'Unity Catalog Gold'],
-        y: [74.2, 91.5, 98.4, 99.9],
-        name: 'Schema Validation Pass %',
-        type: 'bar',
-        marker: { color: ['#94A3B8', '#60A5FA', '#3B82F6', '#2563EB'] }
-      }
-    ];
-  } else {
-    layoutTitle = 'Arduino Uno PPG Heartbeat Sensor — Raw Voltage vs. Python Smoothed BPM Telemetry';
-    traces = [
-      {
-        x: ['0.0s', '0.5s', '1.0s', '1.5s', '2.0s', '2.5s', '3.0s', '3.5s'],
-        y: [71, 74, 79, 75, 73, 76, 74, 72],
-        name: 'Raw Sensor BPM',
-        type: 'scatter',
-        mode: 'lines',
-        line: { color: '#94A3B8', width: 2, dash: 'dot' }
-      },
-      {
-        x: ['0.0s', '0.5s', '1.0s', '1.5s', '2.0s', '2.5s', '3.0s', '3.5s'],
-        y: [72, 73.2, 75.1, 74.8, 74.0, 74.6, 74.2, 73.5],
-        name: 'Python Smoothed BPM',
-        type: 'scatter',
-        mode: 'lines+markers',
-        line: { color: '#2563EB', width: 3 }
-      }
-    ];
-  }
-
-  const layout = {
-    title: { text: layoutTitle, font: { family: 'Space Grotesk, sans-serif', size: 13, color: textColor } },
-    paper_bgcolor: paperBg,
-    plot_bgcolor: paperBg,
-    font: { family: 'Fira Code, monospace', size: 11, color: textColor },
-    margin: { t: 42, r: 20, b: 38, l: 45 },
-    xaxis: { gridcolor: gridColor },
-    yaxis: { gridcolor: gridColor },
-    legend: { orientation: 'h', y: -0.2 }
-  };
-
-  Plotly.react(chartContainer, traces, layout, { responsive: true, displayModeBar: false });
-}
-
-
-/* ==========================================================================
-   6. GMAIL CONTACT FORM DISPATCH (syedmudassir24177@gmail.com)
+   5. GMAIL CONTACT FORM DISPATCH (syedmudassir24177@gmail.com)
    ========================================================================== */
 async function handleContactSubmit(event) {
   event.preventDefault();
@@ -1958,7 +1779,5 @@ window.addEventListener('load', () => {
   initTraitsGrid();
   initKnowledgeBaseLine();
   initSkillsMatrix();
-  initProjectsGrid();
   initWorkFlowchart();
-  setTimeout(() => renderSandboxChart('outbreak'), 250);
 });

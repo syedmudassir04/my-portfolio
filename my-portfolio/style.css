@@ -20,7 +20,7 @@ html {
   --text-muted: #475569;
   --border-subtle: #E2E8F0;
   --accent-blue: #2563EB;
-  --accent-Tint: rgba(37, 99, 235, 0.08);
+  --accent-tint: rgba(37, 99, 235, 0.08);
 }
 
 html.dark {
@@ -32,7 +32,7 @@ html.dark {
   --text-muted: #94A3B8;
   --border-subtle: #1E293B;
   --accent-blue: #3B82F6;
-  --accent-Tint: rgba(59, 130, 246, 0.15);
+  --accent-tint: rgba(59, 130, 246, 0.15);
 }
 
 body {
@@ -41,7 +41,6 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Dark mode overrides for structural classes */
 html.dark .bg-alabaster,
 html.dark .bg-white {
   background-color: var(--bg-card) !important;
@@ -92,7 +91,7 @@ html.dark .bg-blue-50\/90 {
 .ambient-video-blend {
   background: radial-gradient(
     ellipse at center,
-    var(--accent-Tint) 0%,
+    var(--accent-tint) 0%,
     rgba(148, 163, 184, 0.08) 55%,
     transparent 100%
   );
@@ -117,7 +116,6 @@ html.dark .bg-blue-50\/90 {
   z-index: 90;
 }
 
-/* Desktop Hover Activation */
 @media (hover: hover) and (pointer: fine) {
   .node-group:hover > .node-popup {
     opacity: 1;
@@ -126,7 +124,6 @@ html.dark .bg-blue-50\/90 {
   }
 }
 
-/* Mobile & Touch Tap-Toggle Activation */
 .node-group.touch-open > .node-popup {
   opacity: 1;
   visibility: visible;
@@ -184,7 +181,6 @@ html.dark .bg-blue-50\/90 {
   transform: translateY(0) scale(1);
 }
 
-/* Active Skill Filter Pill Highlight */
 .skill-pill-active {
   background-color: #2563EB !important;
   color: #FFFFFF !important;
